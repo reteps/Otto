@@ -18,3 +18,7 @@ features to watch for;
 + only select certain groups to run in
 
 The parser will be written in golang for efficiency
+
+NOTE:
++ parts of SendText.applescript and otto.applescript were taken from
+[Jared](github.com/ZekeSnider/Jared). All credit goes to its owner.
