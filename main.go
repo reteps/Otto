@@ -17,7 +17,7 @@ func date(message, from string) string {
 	return format
 }
 func send(message, chatid string) {
-	exec.Command("./SendText.applescript", message, chatid).Run()
+	exec.Command("/Users/Peter/repos/Otto/SendText.applescript", message, chatid).Run()
 }
 func main() {
 	keywords := map[string]string{"hello": "hello there!", "version": "I am currently version 1.0", "date": "function"}
@@ -29,9 +29,11 @@ func main() {
 		if section == "otto" {
 			//otto is being invoked
 			phrase := message[4:]
+			hasBeenCalled := false
 			for key, value := range keywords {
 				if strings.Contains(phrase, key) {
 					//do whatever that word maps to
+					hasBeenCalled = true
 					var result string
 					if value == "function" {
 						//assumes date title matches with keyword
@@ -40,7 +42,11 @@ func main() {
 						result = value
 					}
 					send(result, chatid)
+					break
 				}
+			}
+			if hasBeenCalled == false {
+				send("Otto is at your service", chatid)
 			}
 		}
 	}
