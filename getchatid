@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+import sqlite3 as sql
+import os
+def set_group():
+    home = os.path.expanduser("~")
+    db = sql.connect('{}/Library/Messages/chat.db'.format(home))
+    cur = db.cursor()
+    cur.execute("SELECT guid, display_name FROM chat WHERE display_name IS NOT ''")
+    rows = cur.fetchall()
+    for i in range(len(rows)):
+        print('{:02d} : {}'.format(i+1,rows[i][1]))
+    x = int(input('select your group > '))
+    groupid = rows[x - 1][0]
+    print(groupid)
+set_group()

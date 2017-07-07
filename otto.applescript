@@ -1,17 +1,9 @@
 using terms from application "Messages"
+  set fileLocation to "/Users/Peter/repos/Otto/ottohandler"
 	on message sent theMessage with eventDescription
 	end message sent
 	
 	on message received theText from theBuddy with eventDescription
-		set getname to name of theBuddy as text
-		try
-			set myresult to get id of theBuddy
-		on error errMsg
-			set errMsgParts to splitText(errMsg, "\"")
-			set errCount to count of errMsgParts
-			set myresult to item (errCount - 1) of errMsgParts
-		end try
-		do shell script ("/usr/local/bin/python3 /Users/Peter/repos/imessage/message \"" & theText & "|~|" & getname & "|~|" & myresult & "\"")
 	end message received
 	
 	on chat room message received theText with eventDescription from theBuddy for theChat
@@ -23,7 +15,7 @@ using terms from application "Messages"
 			set errCount to count of errMsgParts
 			set myresult to item (errCount - 1) of errMsgParts
 		end try
-		do shell script ("/usr/local/bin/python3 /Users/Peter/repos/imessage/message \"" & theText & "|~|" & getname & "|~|" & myresult & "\"")
+		do shell script (fileLocation & "\"" & theText & "|~|" & getname & "|~|" & myresult & "\"")
 	end chat room message received
 	
 	on active chat message received theText with eventDescription from theBuddy for theChat
@@ -35,7 +27,7 @@ using terms from application "Messages"
 			set errCount to count of errMsgParts
 			set myresult to item (errCount - 1) of errMsgParts
 		end try
-		do shell script ("/usr/local/bin/python3 /Users/Peter/repos/imessage/message \"" & theText & "|~|" & getname & "|~|" & myresult & "\"")
+		do shell script (fileLocation & "\"" & theText & "|~|" & getname & "|~|" & myresult & "\"")
 	end active chat message received
 	
 	on addressed message received theText with eventDescription from theBuddy for theChat
@@ -47,7 +39,7 @@ using terms from application "Messages"
 			set errCount to count of errMsgParts
 			set myresult to item (errCount - 1) of errMsgParts
 		end try
-		do shell script ("/usr/local/bin/python3 /Users/Peter/repos/imessage/message \"" & theText & "|~|" & getname & "|~|" & myresult & "\"")
+		do shell script (fileLocation & "\"" & theText & "|~|" & getname & "|~|" & myresult & "\"")
 	end addressed message received
 	
 	on received text invitation with eventDescription
