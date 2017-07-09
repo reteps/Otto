@@ -1,5 +1,0 @@
-#!/usr/bin/env python3
-import sys
-
-with open("file.txt","w") as f:
-    f.write(sys.argv[1:])

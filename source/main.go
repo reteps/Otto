@@ -1,9 +1,9 @@
 package main
 
 import (
+	"github.com/reteps/Otto/ottolib"
 	"os"
 	"os/exec"
-	"ottolib"
 	"strings"
 )
 

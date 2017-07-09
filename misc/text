@@ -1,0 +1,7 @@
+#!/usr/bin/env python3
+
+import os
+
+text = input('message >')
+groupid = input('groupid (run getchatid) >')
+os.system('/Users/Peter/repos/Otto/SendText.applescript "{}" "{}"'.format(text,groupid))
