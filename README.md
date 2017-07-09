@@ -1,24 +1,39 @@
 # Otto
 an imessage bot
 
-otto is a group chat imessages OSX handler.
+otto is a group chat imessages OSX handler. It runs in applescript with a golang parser.
 
-+ use otto.applescript to handle messages
-+ the text is passed to a parser and gets the desired result
-+ SendText.applescript sends the message
 
-syntax:
+imessage syntax:  
+`otto COMMAND ARGS`  
+`(otto) (say) (that's cool!)`
 
-`OTTO COMMAND ARGS`
 
-example:
-otto google how cool is that!
-
-features to watch for;
-+ easy edit commands
+features to watch for / things that need to be added
++ ~easy edit commands~
++ `help` and `say` command
++ read `sendlocation` from a file (`settings.txt`?) and also functionality turning on and off
 + only select certain groups to run in
++ duplication glitch (sends message twice)
++ 
 
-The parser will be written in `golang` for efficiency
+
+set it up:
++ place `otto.applescript` inside of `~/Library/Application Scripts/com.apple.iChat`
++ select `otto.applescript` as the applescript handler in `imessages > preferences`
++ replace the location of `ottohandler` 3x inside of `otto.applescript`
+  + line `19`,`31` and `43`
++ change the `sendlocation` inside of `settings.txt` *not possible yet*
++ in theory, this should work
+
+how it works:
++ `otto.applescript` receives the message and sends it to `ottohandler` in the form of `MESSAGE|~|WHO|~|GROUPID`
++ `ottohandler` gets the correct text to send (if any) and calls `SendText.applescript` with a message and groupid
++ `SendText.applescript` sends the text.
+
+contributing:
++ create an issue with your wanted feature 
++ write a command for `ottolib` and send a Pull Request
 
 DISCLAIMER:
 + parts of `SendText.applescript` and `otto.applescript` were taken from
