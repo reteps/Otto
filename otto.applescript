@@ -16,7 +16,7 @@ using terms from application "Messages"
 			set errCount to count of errMsgParts
 			set myresult to item (errCount - 1) of errMsgParts
 		end try
-		do shell script ("/Users/Peter/repos/Otto/ottohandler" & "\"" & theText & "|~|" & getname & "|~|" & myresult & "\"")
+		do shell script ("/Users/Peter/repos/Otto/ottohandler " & "\"" & theText & "|~|" & getname & "|~|" & myresult & "\"")
 	end chat room message received
 	
 	on active chat message received theText with eventDescription from theBuddy for theChat
@@ -28,7 +28,7 @@ using terms from application "Messages"
 			set errCount to count of errMsgParts
 			set myresult to item (errCount - 1) of errMsgParts
 		end try
-		do shell script ("/Users/Peter/repos/Otto/ottohandler" & "\"" & theText & "|~|" & getname & "|~|" & myresult & "\"")
+		do shell script ("/Users/Peter/repos/Otto/ottohandler " & "\"" & theText & "|~|" & getname & "|~|" & myresult & "\"")
 	end active chat message received
 	
 	on addressed message received theText with eventDescription from theBuddy for theChat
@@ -40,7 +40,7 @@ using terms from application "Messages"
 			set errCount to count of errMsgParts
 			set myresult to item (errCount - 1) of errMsgParts
 		end try
-		do shell script ("/Users/Peter/repos/Otto/ottohandler" & "\"" & theText & "|~|" & getname & "|~|" & myresult & "\"")
+		do shell script ("/Users/Peter/repos/Otto/ottohandler " & "\"" & theText & "|~|" & getname & "|~|" & myresult & "\"")
 	end addressed message received
 	
 	on received text invitation with eventDescription
