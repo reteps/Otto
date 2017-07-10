@@ -1,7 +1,8 @@
 # Otto
 an imessage bot
 
-otto is a group chat imessages OSX handler. It runs in applescript with a golang parser.
+otto is a group chat imessages OSX handler. It runs in applescript with a golang parser.  
+WARNING *this is hard to setup*. If we get 5 stars I will make it easier.
 
 
 imessage syntax:  
