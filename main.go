@@ -17,6 +17,7 @@ func main() {
 	funcMap := ottolib.FuncMap()
 	fulltext := strings.Split(os.Args[1:][0], "|~|")
 	message, from, chatid := fulltext[0], fulltext[1], fulltext[2]
+
 	if len(message) >= 4 {
 		section := strings.ToLower(message[:4])
 		if section == "otto" {

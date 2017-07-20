@@ -17,7 +17,7 @@ using terms from application "Messages"
 			set myresult to item (errCount - 1) of errMsgParts
 		end try
     set finalText to replaceText(theText,"\"","'")
-		do shell script ("/Users/Peter/repos/Otto/ottohandler " & "\"" & finalText & "|~|" & getname & "|~|" & myresult & "\"")
+		do shell script ("/Users/Peter/go/src/Otto/ottohandler " & "\"" & finalText & "|~|" & getname & "|~|" & myresult & "\"")
 	end chat room message received
 	
 	on active chat message received theText with eventDescription from theBuddy for theChat
@@ -30,7 +30,7 @@ using terms from application "Messages"
 			set myresult to item (errCount - 1) of errMsgParts
 		end try
     set finalText to replaceText(theText,"\"","'")
-		do shell script ("/Users/Peter/repos/Otto/ottohandler " & "\"" & finalText & "|~|" & getname & "|~|" & myresult & "\"")
+		do shell script ("/Users/Peter/go/src/Otto/ottohandler " & "\"" & finalText & "|~|" & getname & "|~|" & myresult & "\"")
 	end active chat message received
 	
 	on addressed message received theText with eventDescription from theBuddy for theChat
@@ -43,7 +43,7 @@ using terms from application "Messages"
 			set myresult to item (errCount - 1) of errMsgParts
 		end try
     set finalText to replaceText(theText,"\"","'")
-		do shell script ("/Users/Peter/repos/Otto/ottohandler " & "\"" & finalText & "|~|" & getname & "|~|" & myresult & "\"")
+		do shell script ("/Users/Peter/go/src/Otto/ottohandler " & "\"" & finalText & "|~|" & getname & "|~|" & myresult & "\"")
 	end addressed message received
 	
 	on received text invitation with eventDescription

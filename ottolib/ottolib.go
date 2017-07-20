@@ -2,9 +2,9 @@ package ottolib
 
 import (
 	"fmt"
+	"math/rand"
 	"strings"
 	"time"
-	"math/rand"
 )
 
 //--------------FUNCTIONS----------------------//
@@ -24,35 +24,26 @@ func Help(message, from string) string {
 	message := "Commands include:" + strings.Join(keys, ",")
 	return message
 }
-func Mock(message, from string) string {
-	rand.Seed(time.Now().UTC().UnixNano())
-	text :=	Readvalue("2nd to last text")
-	ftext := ""
-	for _, v := range text {
-		sv := string(v)
-		num := rand.Float64()
-		if num > 0.5 {
-			ftext += strings.ToUpper(sv)
-		} else {
-			ftext += strings.ToLower(sv)
-		}
-	}
-	return ftext
-}		
-func ReadValues() {
+func Random(message, from string) string {
+	return "work in progress"
+}
+func ReadValues() (string, int) {
 	sett, _ := ioutil.ReadFile(settings)
-	var data interface{}
+	var data []interface{}
 	err := json.Unmarshal(sett, &data)
-		
+	return data[0].(string), data[1].(int)
+}
+
 //--------------FUNCTIONS----------------------//
 
 //----------------CONSTANTS-------------//
-var settings = "/Users/Peter/repos/Otto/settings.json"
-var sendlocation = "/Users/Peter/repos/Otto/SendText.applescript"
-var funcmap = map[string]func(string, string) string{"date": Date,"help":Help,"mock":Mock}
-var keywords = map[string]string{"hello": "hello there!", "version": "I am currently version 1.0", 
-"date": "FUNCTION","help":"FUNCTION","turn":"FUNCTION","tell":"FUNCTION","mock":"FUNCTION"}
-var errormessage = "Sorry, I don't understand"
+var (
+	settings = "/Users/Peter/go/src/Otto/settings.json"
+	funcmap  = map[string]func(string, string) string{"date": Date, "help": Help, "random": Random}
+	keywords = map[string]string{"hello": "hello there!", "version": "I am currently version 1.0",
+		"date": "FUNCTION", "help": "FUNCTION", "random": "FUNCTION"}
+	errormessage = "Sorry, I don't understand"
+)
 
 //----------------CONSTANTS-------------//
 
@@ -63,9 +54,6 @@ func FuncMap() map[string]func(string, string) string {
 }
 func Keywords() map[string]string {
 	return keywords
-}
-func SendLocation() string {
-	return sendlocation
 }
 func Errormessage() string {
 	return errormessage
