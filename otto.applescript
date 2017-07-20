@@ -16,7 +16,8 @@ using terms from application "Messages"
 			set errCount to count of errMsgParts
 			set myresult to item (errCount - 1) of errMsgParts
 		end try
-		do shell script ("/Users/Peter/repos/Otto/ottohandler " & "\"" & theText & "|~|" & getname & "|~|" & myresult & "\"")
+    set finalText to replaceText(theText,"\"","'")
+		do shell script ("/Users/Peter/repos/Otto/ottohandler " & "\"" & finalText & "|~|" & getname & "|~|" & myresult & "\"")
 	end chat room message received
 	
 	on active chat message received theText with eventDescription from theBuddy for theChat
@@ -28,7 +29,8 @@ using terms from application "Messages"
 			set errCount to count of errMsgParts
 			set myresult to item (errCount - 1) of errMsgParts
 		end try
-		do shell script ("/Users/Peter/repos/Otto/ottohandler " & "\"" & theText & "|~|" & getname & "|~|" & myresult & "\"")
+    set finalText to replaceText(theText,"\"","'")
+		do shell script ("/Users/Peter/repos/Otto/ottohandler " & "\"" & finalText & "|~|" & getname & "|~|" & myresult & "\"")
 	end active chat message received
 	
 	on addressed message received theText with eventDescription from theBuddy for theChat
@@ -40,7 +42,8 @@ using terms from application "Messages"
 			set errCount to count of errMsgParts
 			set myresult to item (errCount - 1) of errMsgParts
 		end try
-		do shell script ("/Users/Peter/repos/Otto/ottohandler " & "\"" & theText & "|~|" & getname & "|~|" & myresult & "\"")
+    set finalText to replaceText(theText,"\"","'")
+		do shell script ("/Users/Peter/repos/Otto/ottohandler " & "\"" & finalText & "|~|" & getname & "|~|" & myresult & "\"")
 	end addressed message received
 	
 	on received text invitation with eventDescription
@@ -90,3 +93,16 @@ on splitText(sourceText, textDelimiter)
 	set AppleScript's text item delimiters to ""
 	return messageParts
 end splitText
+
+on replaceText(someText, oldItem, newItem)
+  set {tempTID, AppleScript's text item delimiters} to {AppleScript's text item delimiters, oldItem}
+  try
+    set {itemList, AppleScript's text item delimiters} to {text items of someText, newItem}
+    set {someText, AppleScript's text item delimiters} to {itemList as text, tempTID}
+  on error errorMessage number errorNumber
+    set AppleScript's text item delimiters to tempTID
+    error errorMessage number errorNumber
+  end try
+ 
+  return someText
+end replaceText

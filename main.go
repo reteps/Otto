@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/reteps/Otto/ottolib"
 	"os"
 	"os/exec"
@@ -8,7 +9,8 @@ import (
 )
 
 func send(message, chatid string) {
-	exec.Command(ottolib.SendLocation(), message, chatid).Run()
+	command := fmt.Sprintf("osascript -e 'tell application \"Messages\"' -e 'set mybuddy to a reference to text chat id \"%s\"' -e 'send \"%s\" to mybuddy' -e 'end tell'", chatid, message)
+	exec.Command(command).Run()
 }
 func main() {
 	keywords := ottolib.Keywords()
