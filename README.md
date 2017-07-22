@@ -15,13 +15,6 @@ set it up:
 + move `otto.applescript` to `~/Library/Application Scripts/com.apple.iChat` 
 + select `otto.applescript` as your imessage handler.
 
-
-current commands:
-+ `hello, say, version, random, help, date`
-
-commands to add:
-+ `time, mock`
-
 DISCLAIMER:
 + parts of `main.go` and `otto.applescript` were taken from
 [Jared](https://github.com/ZekeSnider/Jared). All credit goes to its owner.
