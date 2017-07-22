@@ -29,6 +29,11 @@ func Help(message, from string) string {
 	newmessage := "Commands include:" + strings.Join(keys, ",")
 	return newmessage
 }
+func Randint(low, high int) string {
+	result := strconv.Itoa(rand.Intn((high+1)-low) + low)
+	return result
+
+}
 func Random(message, from string) string {
 	values := strings.Split(message[7:], " ")
 	fmt.Println(values)
@@ -47,8 +52,7 @@ func Random(message, from string) string {
 		return "high must be bigger then low"
 	}
 	rand.Seed(time.Now().UTC().UnixNano())
-	result := strconv.Itoa(rand.Intn((high+1)-low) + low)
-	return result
+	return Randint(low, high)
 }
 func Say(message, from string) string {
 	if message[4:] == "" {
@@ -56,11 +60,50 @@ func Say(message, from string) string {
 	}
 	return message[5:]
 }
+func Roll(message, from string) string {
+	if message[5:] == "" {
+		return "roll what? ex. 2d20"
+	}
+	sections := strings.Split(message[6:], "d")
+	dice, err := strconv.Atoi(sections[0])
+	if err != nil {
+		return "invalid dice amount"
+	}
+	if dice > 100 {
+		return "too many dice - max is 100"
+	}
+	num, err := strconv.Atoi(sections[1])
+	if err != nil {
+		return "invalid high roll"
+	}
+	var result []string
+	rand.Seed(time.Now().UTC().UnixNano())
+	for i := 0; i < dice; i++ {
+		result = append(result, Randint(1, num))
+	}
+	return strings.Join(result, ",")
+}
+func Mock(message, from string) string {
+	rand.Seed(time.Now().UTC().UnixNano())
+	ftext := ""
+	for _, v := range Data.Lasttext {
+		sv := string(v)
+		num := rand.Float64()
+		if num > 0.5 {
+			ftext += strings.ToUpper(sv)
+		} else {
+			ftext += strings.ToLower(sv)
+		}
+	}
+	return ftext
+}
 
 var (
-	funcmap  = map[string]func(string, string) string{"date": Date, "help": Help, "random": Random, "say": Say}
+	funcmap  = map[string]func(string, string) string{"date": Date, "help": Help, "random": Random, "say": Say, "roll": Roll, "mock": Mock}
 	keywords = map[string]string{"hello": "hello there!", "version": "I am currently version 1.1beta",
-		"date": "FUNCTION", "help": "FUNCTION", "random": "FUNCTION", "say": "FUNCTION", "what": "I am a imessage virtual assistant that runs when Peter's computer is on. Type 'otto help' to see all the commands I can do."}
+		"date": "FUNCTION", "help": "FUNCTION", "random": "FUNCTION", "say": "FUNCTION",
+		"what": "I am a imessage virtual assistant that runs when Peter's computer is on. Type 'otto help' to see all the commands I can do.",
+		"roll": "FUNCTION", "mock": "FUNCTION"}
 )
 
 //--------------DO NOT MODIFY------------------------//
@@ -75,10 +118,11 @@ func testsend(message, chatid string) {
 }
 
 type Results struct {
-	Lastperson   string `json:"lastperson"`
-	Lastamount   int    `json:"lastamount"`
-	Lasttext     string `json:"lasttext"`
-	Errormessage string `json:"errormessage"`
+	Lastperson     string `json:"lastperson"`
+	Lastamount     int    `json:"lastamount"`
+	Lasttext       string `json:"lasttext"`
+	Lasttextperson string `json:"lasttextperson"`
+	Errormessage   string `json:"errormessage"`
 }
 
 func readandparsesettings(location string) Results {
@@ -88,15 +132,15 @@ func readandparsesettings(location string) Results {
 	if err != nil {
 		panic(err)
 	}
-	data := Results{}
-	err = json.Unmarshal(file, &data)
+	Data := Results{}
+	err = json.Unmarshal(file, &Data)
 	if err != nil {
 		panic(err)
 	}
-	return data
+	return Data
 }
-func writesettings(location string, data Results) error {
-	jsondata, err := json.Marshal(data)
+func writesettings(location string, Data Results) error {
+	jsondata, err := json.Marshal(Data)
 	if err != nil {
 		return err
 	}
@@ -106,10 +150,13 @@ func writesettings(location string, data Results) error {
 	}
 	return nil
 }
+
+var Data Results
+
 func main() {
 	fulltext := strings.Split(os.Args[1:][0], "|~|")
 	message, from, chatid, settingslocation := fulltext[0], fulltext[1], fulltext[2], fulltext[3]
-	data := readandparsesettings(settingslocation)
+	Data = readandparsesettings(settingslocation)
 	ottomessage := false
 	if len(message) >= 4 {
 		section := strings.ToLower(message[:4])
@@ -117,15 +164,18 @@ func main() {
 			ottomessage = true
 			//check if allowed
 			allowedtorun := true
-			if from == data.Lastperson {
-				data.Lastamount += 1
-				if data.Lastamount >= 5 {
+			if from == Data.Lastperson {
+				Data.Lastamount += 1
+				if Data.Lastamount == 5 {
+					send("You have reached your 5 consecutive text limit", chatid)
+				}
+				if Data.Lastamount >= 5 {
 					allowedtorun = false
 				}
 
 			} else {
-				data.Lastperson = from
-				data.Lastamount = 0
+				Data.Lastperson = from
+				Data.Lastamount = 0
 			}
 			//send correct text
 			if allowedtorun {
@@ -136,7 +186,7 @@ func main() {
 						hasntBeenCalled = false
 						var result string
 						if value == "FUNCTION" {
-							result = funcmap[key](phrase, from)
+							result = funcmap[key](phrase, Data.Lasttextperson)
 						} else {
 							result = value
 						}
@@ -145,10 +195,10 @@ func main() {
 					}
 				}
 				if hasntBeenCalled {
-					send(data.Errormessage, chatid)
+					send(Data.Errormessage, chatid)
 				}
 			}
-			err := writesettings(settingslocation, data)
+			err := writesettings(settingslocation, Data)
 			if err != nil {
 				panic(err)
 			}
@@ -156,8 +206,9 @@ func main() {
 		}
 	}
 	if ottomessage != true {
-		data.Lasttext = message
-		err := writesettings(settingslocation, data)
+		Data.Lasttext = message
+		Data.Lasttextperson = from
+		err := writesettings(settingslocation, Data)
 		if err != nil {
 			panic(err)
 		}
