@@ -60,7 +60,7 @@ func Say(message, from string) string {
 var (
 	funcmap  = map[string]func(string, string) string{"date": Date, "help": Help, "random": Random, "say": Say}
 	keywords = map[string]string{"hello": "hello there!", "version": "I am currently version 1.1beta",
-		"date": "FUNCTION", "help": "FUNCTION", "random": "FUNCTION", "say": "FUNCTION"}
+		"date": "FUNCTION", "help": "FUNCTION", "random": "FUNCTION", "say": "FUNCTION", "what": "I am a imessage virtual assistant that runs when Peter's computer is on. Type 'otto help' to see all the commands I can do."}
 )
 
 //--------------DO NOT MODIFY------------------------//
