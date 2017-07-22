@@ -4,8 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"math/rand"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -28,13 +30,37 @@ func Help(message, from string) string {
 	return newmessage
 }
 func Random(message, from string) string {
-	return "work in progress"
+	values := strings.Split(message[7:], " ")
+	fmt.Println(values)
+	if len(values) != 3 { //space
+		return "usage:random low high"
+	}
+	low, err := strconv.Atoi(values[1])
+	if err != nil {
+		return "invalid low number"
+	}
+	high, err := strconv.Atoi(values[2])
+	if err != nil {
+		return "invalid high number"
+	}
+	if high-low <= 0 {
+		return "high must be bigger then low"
+	}
+	rand.Seed(time.Now().UTC().UnixNano())
+	result := strconv.Itoa(rand.Intn((high+1)-low) + low)
+	return result
+}
+func Say(message, from string) string {
+	if message[4:] == "" {
+		return "say what?"
+	}
+	return message[5:]
 }
 
 var (
-	funcmap  = map[string]func(string, string) string{"date": Date, "help": Help, "random": Random}
-	keywords = map[string]string{"hello": "hello there!", "version": "I am currently version 1.0",
-		"date": "FUNCTION", "help": "FUNCTION", "random": "FUNCTION"}
+	funcmap  = map[string]func(string, string) string{"date": Date, "help": Help, "random": Random, "say": Say}
+	keywords = map[string]string{"hello": "hello there!", "version": "I am currently version 1.1beta",
+		"date": "FUNCTION", "help": "FUNCTION", "random": "FUNCTION", "say": "FUNCTION"}
 )
 
 //--------------DO NOT MODIFY------------------------//
@@ -43,7 +69,6 @@ func send(message, chatid string) {
 	mybuddy := fmt.Sprintf("set mybuddy to a reference to text chat id \"%s\"", chatid)
 	send := fmt.Sprintf("send \"%s\" to mybuddy", message)
 	exec.Command("/usr/bin/osascript", "-e", "tell application \"Messages\"", "-e", mybuddy, "-e", send, "-e", "end tell").Run()
-	fmt.Println("message")
 }
 func testsend(message, chatid string) {
 	fmt.Println(message)
@@ -100,7 +125,7 @@ func main() {
 
 			} else {
 				data.Lastperson = from
-				data.Lastamount = 1
+				data.Lastamount = 0
 			}
 			//send correct text
 			if allowedtorun {
@@ -111,7 +136,7 @@ func main() {
 						hasntBeenCalled = false
 						var result string
 						if value == "FUNCTION" {
-							result = funcmap[key](message, from)
+							result = funcmap[key](phrase, from)
 						} else {
 							result = value
 						}
