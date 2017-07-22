@@ -11,14 +11,16 @@ imessage chat syntax:
 
 set it up:
 + clone this repo and give a star.
-+ run `setup.sh` to set up `otto.applescript`
++ change the `ottohandler` and `settings.json` location 3x inside of `otto.applescript`
++ move `otto.applescript` to `~/Library/Application Scripts/com.apple.iChat` 
 + select `otto.applescript` as your imessage handler.
 
 
-how it works:
-+ `otto.applescript` receives the message and sends it to `ottohandler` in the form of `MESSAGE|~|WHO|~|GROUPID|~|SETTINGSLOCATION`
-+ `ottohandler` reads the settings, then gets the correct text to send (if any) and sends the text
+current commands:
++ `hello, say, version, random, help, date`
 
+commands to add:
++ `time, mock`
 
 DISCLAIMER:
 + parts of `main.go` and `otto.applescript` were taken from
