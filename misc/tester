@@ -1,8 +1,0 @@
-#!/usr/bin/env python3
-
-import os
-import sys
-if len(sys.argv) >= 2:
-    os.system('cd ~/go/src/Otto;go run main.go "{}|~|{}|~|{}"'.format("Otto is testing...","someone","iMessage;+;chat508017006480766416"))
-else:
-    print('cd ~/go/src/Otto;go run main.go "{}|~|{}|~|{}|{}"'.format("Otto is testing...","someone","iMessage;+;chat508017006480766416","~/go/src/Otto/settings.json"))
