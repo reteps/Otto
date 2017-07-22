@@ -69,12 +69,12 @@ func Roll(message, from string) string {
 	if err != nil {
 		return "invalid dice amount"
 	}
-	if dice > 100 {
-		return "too many dice - max is 100"
-	}
 	num, err := strconv.Atoi(sections[1])
 	if err != nil {
 		return "invalid high roll"
+	}
+	if dice > 100 || num > 100 {
+		return "max number is 100"
 	}
 	var result []string
 	rand.Seed(time.Now().UTC().UnixNano())
