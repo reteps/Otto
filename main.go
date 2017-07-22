@@ -40,8 +40,10 @@ var (
 //--------------DO NOT MODIFY------------------------//
 
 func send(message, chatid string) {
-	command := fmt.Sprintf("osascript -e 'tell application \"Messages\"' -e 'set mybuddy to a reference to text chat id \"%s\"' -e 'send \"%s\" to mybuddy' -e 'end tell'", chatid, message)
-	exec.Command(command).Run()
+	mybuddy := fmt.Sprintf("set mybuddy to a reference to text chat id \"%s\"", chatid)
+	send := fmt.Sprintf("send \"%s\" to mybuddy", message)
+	exec.Command("/usr/bin/osascript", "-e", "tell application \"Messages\"", "-e", mybuddy, "-e", send, "-e", "end tell").Run()
+	fmt.Println("message")
 }
 func testsend(message, chatid string) {
 	fmt.Println(message)
@@ -113,13 +115,12 @@ func main() {
 						} else {
 							result = value
 						}
-						testsend(result, chatid)
-						//send(result, chatid)
+						send(result, chatid)
 						break
 					}
 				}
 				if hasntBeenCalled {
-					testsend(data.Errormessage, chatid)
+					send(data.Errormessage, chatid)
 				}
 			}
 			err := writesettings(settingslocation, data)
