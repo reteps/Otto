@@ -26,7 +26,7 @@ func Help(message, from string) string {
 		keys[i] = k
 		i++
 	}
-	newmessage := "Commands include:" + strings.Join(keys, ",")
+	newmessage := "Commands include:\n" + strings.Join(keys, ", ")
 	return newmessage
 }
 func Randint(low, high int) string {
