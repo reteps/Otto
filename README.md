@@ -11,7 +11,7 @@ imessage chat syntax:
 
 set it up:
 + clone this repo and give a star.
-+ change the `ottohandler` and `settings.json` location 3x inside of `otto.applescript`
++ change the `ottohandler` and `settings.json` location 2x inside of `otto.applescript`
 + move `otto.applescript` to `~/Library/Application Scripts/com.apple.iChat` 
 + select `otto.applescript` as your imessage handler.
 
