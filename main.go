@@ -83,13 +83,21 @@ func Roll(message, from string) string {
 	}
 	return strings.Join(result, ",")
 }
+func randbool() bool {
+	num := rand.Float64()
+	if num > 0.5 {
+		return true
+	} else {
+		return false
+	}
+}
 func Mock(message, from string) string {
 	rand.Seed(time.Now().UTC().UnixNano())
 	ftext := ""
 	for _, v := range Data.Lasttext {
 		sv := string(v)
-		num := rand.Float64()
-		if num > 0.5 {
+		mybool := randbool()
+		if mybool == true {
 			ftext += strings.ToUpper(sv)
 		} else {
 			ftext += strings.ToLower(sv)
@@ -97,13 +105,28 @@ func Mock(message, from string) string {
 	}
 	return ftext
 }
+func Flip(message, from string) string {
+	rand.Seed(time.Now().UTC().UnixNano())
+	state := randbool()
+	if state == true {
+		return "heads"
+	} else {
+		return "tails"
+	}
+}
+func Magic(message, from string) string {
+	rand.Seed(time.Now().UTC().UnixNano())
+	num, _ := strconv.Atoi(Randint(0, len(Data.Phrases)-1))
+	return Data.Phrases[num]
+}
 
 var (
-	funcmap  = map[string]func(string, string) string{"date": Date, "help": Help, "random": Random, "say": Say, "roll": Roll, "mock": Mock}
+	funcmap = map[string]func(string, string) string{"date": Date, "help": Help, "random": Random, "say": Say, "roll": Roll, "mock": Mock,
+		"flip": Flip, "magic": Magic}
 	keywords = map[string]string{"hello": "hello there!", "version": "I am currently version 1.1beta",
 		"date": "FUNCTION", "help": "FUNCTION", "random": "FUNCTION", "say": "FUNCTION",
 		"what": "I am a imessage virtual assistant that runs when Peter's computer is on. Type 'otto help' to see all the commands I can do.",
-		"roll": "FUNCTION", "mock": "FUNCTION"}
+		"roll": "FUNCTION", "mock": "FUNCTION", "thanks": "you're welcome", "flip": "FUNCTION", "magic": "FUNCTION"}
 )
 
 //--------------DO NOT MODIFY------------------------//
@@ -118,11 +141,12 @@ func testsend(message, chatid string) {
 }
 
 type Results struct {
-	Lastperson     string `json:"lastperson"`
-	Lastamount     int    `json:"lastamount"`
-	Lasttext       string `json:"lasttext"`
-	Lasttextperson string `json:"lasttextperson"`
-	Errormessage   string `json:"errormessage"`
+	Lastperson     string   `json:"lastperson"`
+	Lastamount     int      `json:"lastamount"`
+	Lasttext       string   `json:"lasttext"`
+	Lasttextperson string   `json:"lasttextperson"`
+	Errormessage   string   `json:"errormessage"`
+	Phrases        []string `json:"8ballwords"`
 }
 
 func readandparsesettings(location string) Results {
@@ -166,11 +190,11 @@ func main() {
 			allowedtorun := true
 			if from == Data.Lastperson {
 				Data.Lastamount += 1
+				if Data.Lastamount > 5 {
+					allowedtorun = false
+				}
 				if Data.Lastamount == 5 {
 					send("You have reached your 5 consecutive text limit", chatid)
-				}
-				if Data.Lastamount >= 5 {
-					allowedtorun = false
 				}
 
 			} else {
@@ -182,16 +206,18 @@ func main() {
 				phrase := message[4:]
 				hasntBeenCalled := true
 				for key, value := range keywords {
-					if strings.Contains(phrase, key) {
-						hasntBeenCalled = false
-						var result string
-						if value == "FUNCTION" {
-							result = funcmap[key](phrase, Data.Lasttextperson)
-						} else {
-							result = value
+					if len(phrase) > len(key) {
+						if phrase[1:len(key)+1] == key {
+							hasntBeenCalled = false
+							var result string
+							if value == "FUNCTION" {
+								result = funcmap[key](phrase, Data.Lasttextperson)
+							} else {
+								result = value
+							}
+							send(result, chatid)
+							break
 						}
-						send(result, chatid)
-						break
 					}
 				}
 				if hasntBeenCalled {
