@@ -199,7 +199,7 @@ func main() {
 
 			} else {
 				Data.Lastperson = from
-				Data.Lastamount = 0
+				Data.Lastamount = 1
 			}
 			//send correct text
 			if allowedtorun {
