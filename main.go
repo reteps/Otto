@@ -122,11 +122,11 @@ func Magic(message, from string) string {
 
 var (
 	funcmap = map[string]func(string, string) string{"date": Date, "help": Help, "random": Random, "say": Say, "roll": Roll, "mock": Mock,
-		"flip": Flip, "magic": Magic}
+		"flip": Flip, "magic": Magic, "will": Magic}
 	keywords = map[string]string{"hello": "hello there!", "version": "I am currently version 1.1beta",
 		"date": "FUNCTION", "help": "FUNCTION", "random": "FUNCTION", "say": "FUNCTION",
 		"what": "I am a imessage virtual assistant that runs when Peter's computer is on. Type 'otto help' to see all the commands I can do.",
-		"roll": "FUNCTION", "mock": "FUNCTION", "thanks": "you're welcome", "flip": "FUNCTION", "magic": "FUNCTION"}
+		"roll": "FUNCTION", "mock": "FUNCTION", "thanks": "you're welcome", "flip": "FUNCTION", "magic": "FUNCTION", "will": "FUNCTION"}
 )
 
 //--------------DO NOT MODIFY------------------------//
