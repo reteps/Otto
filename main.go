@@ -150,8 +150,8 @@ func Weather(message, from string) string {
 
 	weather := &WeatherDecoder{}
 	json.NewDecoder(resp.Body).Decode(weather)
-	response := fmt.Sprintf("Today in %s, it is %.2f degress with a high of %.2f and a low of %.2f. The weather is %s and there is %.0f%% humidity.",
-		weather.Name, weather.Main["temp"], weather.Main["temp_max"], weather.Main["temp_min"], weather.Weather[0]["main"], weather.Main["humidity"])
+	response := fmt.Sprintf("Today in %s, it is %.2f degrees. The weather is %s and there is %.0f%% humidity.",
+		weather.Name, weather.Main["temp"], weather.Weather[0]["main"], weather.Main["humidity"])
 	return response
 }
 

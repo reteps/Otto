@@ -6,8 +6,8 @@
     "chat": {
         "lastperson": "someone",
         "lastamount": 1,
-        "lasttext": "",
-        "lasttextperson": ""
+        "lasttext": "Thanks...",
+        "lasttextperson": "Alexandra"
     },
     "errormessage": "Sorry, I dont understand",
     "eightball": {
