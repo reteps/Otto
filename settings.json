@@ -4,12 +4,10 @@
         "apikey": "6a4cbda1e239084151dea640a95d2a0c"
     },
     "chat": {
-        "iMessage;+;chat508017006480766416": {
-            "lastperson": "someone",
-            "lastamount": 1,
-            "lasttext": "hello",
-            "lasttextperson": "someone"
-        }
+        "lastperson": "someone",
+        "lastamount": 1,
+        "lasttext": "",
+        "lasttextperson": ""
     },
     "errormessage": "Sorry, I dont understand",
     "eightball": {

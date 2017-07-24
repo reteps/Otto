@@ -94,7 +94,7 @@ func randbool() bool {
 func Mock(message, from string) string {
 	rand.Seed(time.Now().UTC().UnixNano())
 	ftext := ""
-	for _, v := range chatinfo.Lasttext {
+	for _, v := range Data.Chat.Lasttext {
 		sv := string(v)
 		mybool := randbool()
 		if mybool == true {
@@ -181,10 +181,10 @@ type ChatSettings struct {
 	Lasttextperson string `json:"lasttextperson"`
 }
 type Results struct {
-	Weather      WeatherSettings         `json:"weather"`
-	Chat         map[string]ChatSettings `json:"chat"`
-	Errormessage string                  `json:"errormessage"`
-	Eightball    EightballSettings       `json:"eightball"`
+	Weather      WeatherSettings   `json:"weather"`
+	Chat         ChatSettings      `json:"chat"`
+	Errormessage string            `json:"errormessage"`
+	Eightball    EightballSettings `json:"eightball"`
 }
 
 //--------------DO NOT MODIFY------------------------//
@@ -225,31 +225,29 @@ func writesettings(location string, Data Results) error {
 }
 
 var Data Results
-var chatinfo ChatSettings
 
 func main() {
 	fulltext := strings.Split(os.Args[1:][0], "|~|")
 	message, from, chatid, settingslocation := fulltext[0], fulltext[1], fulltext[2], fulltext[3]
 	Data = readandparsesettings(settingslocation)
-	chatinfo = Data.Chat[chatid]
 	ottomessage := false
 	if len(message) >= 4 {
 		if strings.ToLower(message[:4]) == "otto" {
 			ottomessage = true
 			//check if allowed
 			allowedtorun := true
-			if from == chatinfo.Lastperson {
-				chatinfo.Lastamount += 1
-				if chatinfo.Lastamount > 5 {
+			if from == Data.Chat.Lastperson {
+				Data.Chat.Lastamount += 1
+				if Data.Chat.Lastamount > 5 {
 					allowedtorun = false
 				}
-				if chatinfo.Lastamount == 5 {
+				if Data.Chat.Lastamount == 5 {
 					send("You have reached your 5 consecutive text limit", chatid)
 				}
 
 			} else {
-				chatinfo.Lastperson = from
-				chatinfo.Lastamount = 1
+				Data.Chat.Lastperson = from
+				Data.Chat.Lastamount = 1
 			}
 			//send correct text
 			if allowedtorun {
@@ -261,17 +259,17 @@ func main() {
 							hasntBeenCalled = false
 							var result string
 							if value == "FUNCTION" {
-								result = funcmap[key](phrase[len(key)+1:], chatinfo.Lasttextperson)
+								result = funcmap[key](phrase[len(key)+1:], Data.Chat.Lasttextperson)
 							} else {
 								result = value
 							}
-							testsend(result, chatid)
+							send(result, chatid)
 							break
 						}
 					}
 				}
 				if hasntBeenCalled {
-					testsend(Data.Errormessage, chatid)
+					send(Data.Errormessage, chatid)
 				}
 			}
 			err := writesettings(settingslocation, Data)
@@ -282,8 +280,8 @@ func main() {
 		}
 	}
 	if ottomessage != true {
-		chatinfo.Lasttext = message
-		chatinfo.Lasttextperson = from
+		Data.Chat.Lasttext = message
+		Data.Chat.Lasttextperson = from
 		err := writesettings(settingslocation, Data)
 		if err != nil {
 			panic(err)
