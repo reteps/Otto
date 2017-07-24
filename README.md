@@ -9,6 +9,11 @@ imessage chat syntax:
 `(otto) (say) (that's cool!)`
 
 
+features:
++ modular commands
++ customizeable settings
++ settings backup (if your settings file gets corrupted)
+
 set it up:
 + clone this repo and give a star.
 + change the `ottohandler` and `settings.json` location 2x inside of `otto.applescript`
