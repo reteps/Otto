@@ -15,6 +15,15 @@ set it up:
 + move `otto.applescript` to `~/Library/Application Scripts/com.apple.iChat` 
 + select `otto.applescript` as your imessage handler.
 
+contributing:
++ clone this repo
++ add your function - make sure you do it in the format `function(message, from string) string`
++ add your function to the `funcList`
++ add your function to the `keywords`
++ if your function takes arguments, make sure it handles edge cases including:
+  + no arguments called
+  + incorrect arguments
+
 DISCLAIMER:
 + parts of `main.go` and `otto.applescript` were taken from
 [Jared](https://github.com/ZekeSnider/Jared). All credit goes to its owner.
