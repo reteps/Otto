@@ -4,10 +4,10 @@
         "apikey": "6a4cbda1e239084151dea640a95d2a0c"
     },
     "chat": {
-        "lastperson": "Eleanor",
+        "lastperson": "Noah Chartier",
         "lastamount": 1,
-        "lasttext": "What's wrong with you",
-        "lasttextperson": "Lucy Randoom"
+        "lasttext": "😝",
+        "lasttextperson": "Noah Chartier"
     },
     "errormessage": "Sorry, I dont understand",
     "eightball": {
@@ -22,9 +22,14 @@
             "no way"
         ],
         "eastereggs": {
-            "easter egg": [
-                "easter egg",
-                "secret"
+            "I'm not cupid...": [
+                "love",
+                "like",
+                "ship"
+            ],
+            "42": [
+              "meaning of life",
+              "purpose of life"
             ]
         }
     }

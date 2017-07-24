@@ -117,6 +117,14 @@ func Flip(message, from string) string {
 }
 func Magic(message, from string) string {
 	rand.Seed(time.Now().UTC().UnixNano())
+	for key, value := range Data.Eightball.Eastereggs {
+		for _, keyword := range value {
+			if strings.Contains(message, keyword) {
+				return key
+			}
+		}
+	}
+	//normal, no secrets
 	num, _ := strconv.Atoi(Randint(0, len(Data.Eightball.Phrases)-1))
 	return Data.Eightball.Phrases[num]
 }
