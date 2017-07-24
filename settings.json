@@ -1,1 +1,33 @@
-{"lastperson":"Lucy Randoom","lastamount":2,"lasttext":"I'm also determined to not get out of my pajamas today","lasttextperson":"Alexandra","errormessage":"Sorry, I dont understand","8ballwords":["yes","no","maybe","of course","nope","definitely","I don't know","no way"]}
+{
+    "weather": {
+        "default": "davidson",
+        "apikey": "6a4cbda1e239084151dea640a95d2a0c"
+    },
+    "chat": {
+        "iMessage;+;chat508017006480766416": {
+            "lastperson": "someone",
+            "lastamount": 1,
+            "lasttext": "hello",
+            "lasttextperson": "someone"
+        }
+    },
+    "errormessage": "Sorry, I dont understand",
+    "eightball": {
+        "phrases": [
+            "yes",
+            "no",
+            "maybe",
+            "of course",
+            "nope",
+            "definitely",
+            "I don't know",
+            "no way"
+        ],
+        "eastereggs": {
+            "easter egg": [
+                "easter egg",
+                "secret"
+            ]
+        }
+    }
+}

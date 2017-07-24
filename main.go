@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"math/rand"
+	"net/http"
 	"os"
 	"os/exec"
 	"strconv"
@@ -35,16 +36,15 @@ func Randint(low, high int) string {
 
 }
 func Random(message, from string) string {
-	values := strings.Split(message[7:], " ")
-	fmt.Println(values)
-	if len(values) != 3 { //space
+	if message == "" {
 		return "usage:random low high"
 	}
-	low, err := strconv.Atoi(values[1])
+	values := strings.Split(message, " ")
+	low, err := strconv.Atoi(values[0])
 	if err != nil {
 		return "invalid low number"
 	}
-	high, err := strconv.Atoi(values[2])
+	high, err := strconv.Atoi(values[1])
 	if err != nil {
 		return "invalid high number"
 	}
@@ -55,16 +55,16 @@ func Random(message, from string) string {
 	return Randint(low, high)
 }
 func Say(message, from string) string {
-	if message[4:] == "" {
+	if message == "" {
 		return "say what?"
 	}
-	return message[5:]
+	return message[1:]
 }
 func Roll(message, from string) string {
-	if message[5:] == "" {
+	if message == "" {
 		return "roll what? ex. 2d20"
 	}
-	sections := strings.Split(message[6:], "d")
+	sections := strings.Split(message, "d")
 	dice, err := strconv.Atoi(sections[0])
 	if err != nil {
 		return "invalid dice amount"
@@ -94,7 +94,7 @@ func randbool() bool {
 func Mock(message, from string) string {
 	rand.Seed(time.Now().UTC().UnixNano())
 	ftext := ""
-	for _, v := range Data.Lasttext {
+	for _, v := range chatinfo.Lasttext {
 		sv := string(v)
 		mybool := randbool()
 		if mybool == true {
@@ -116,18 +116,76 @@ func Flip(message, from string) string {
 }
 func Magic(message, from string) string {
 	rand.Seed(time.Now().UTC().UnixNano())
-	num, _ := strconv.Atoi(Randint(0, len(Data.Phrases)-1))
-	return Data.Phrases[num]
+	num, _ := strconv.Atoi(Randint(0, len(Data.Eightball.Phrases)-1))
+	return Data.Eightball.Phrases[num]
+}
+func Weather(message, from string) string {
+	var location string
+	if message == "" {
+		location = Data.Weather.Default
+	} else {
+		location = strings.ToLower(message)
+	}
+
+	url := fmt.Sprintf("http://api.openweathermap.org/data/2.5/weather?q=%s&appid=%s&units=imperial", location, Data.Weather.Apikey)
+	resp, err := http.Get(url)
+	if err != nil {
+		return err.Error()
+	}
+
+	type WeatherDecoder struct {
+		Main          map[string]interface{}   `json:"main"`
+		Name          string                   `json:"name"`
+		Weather       []map[string]interface{} `json:"weather"` //description
+		Coord         map[string]float64       `json:"coord"`
+		Base          string                   `json:"base"`
+		Visibility    int                      `json:"visibility"`
+		Wind          map[string]float64       `json:"wind"`
+		Clouds        map[string]int           `json:"clouds"`
+		DateInSeconds int                      `json:"dt"`
+		Sys           map[string]float64       `json:"sys"`
+		Id            int                      `json:"id"`
+		Cod           int                      `json:"cod"`
+	}
+
+	weather := &WeatherDecoder{}
+	json.NewDecoder(resp.Body).Decode(weather)
+	response := fmt.Sprintf("Today in %s, it is %.2f degress with a high of %.2f and a low of %.2f. The weather is %s and there is %.0f%% humidity.",
+		weather.Name, weather.Main["temp"], weather.Main["temp_max"], weather.Main["temp_min"], weather.Weather[0]["main"], weather.Main["humidity"])
+	return response
 }
 
 var (
 	funcmap = map[string]func(string, string) string{"date": Date, "help": Help, "random": Random, "say": Say, "roll": Roll, "mock": Mock,
-		"flip": Flip, "magic": Magic, "will": Magic}
+		"flip": Flip, "magic": Magic, "will": Magic, "weather": Weather}
 	keywords = map[string]string{"hello": "hello there!", "version": "I am currently version 1.1beta",
 		"date": "FUNCTION", "help": "FUNCTION", "random": "FUNCTION", "say": "FUNCTION",
 		"what": "I am a imessage virtual assistant that runs when Peter's computer is on. Type 'otto help' to see all the commands I can do.",
-		"roll": "FUNCTION", "mock": "FUNCTION", "thanks": "you're welcome", "flip": "FUNCTION", "magic": "FUNCTION", "will": "FUNCTION"}
+		"roll": "FUNCTION", "mock": "FUNCTION", "thanks": "you're welcome", "flip": "FUNCTION", "magic": "FUNCTION", "will": "FUNCTION",
+		"hi": "hi there!", "weather": "FUNCTION"}
 )
+
+type WeatherSettings struct {
+	Default string `json:"default"`
+	Apikey  string `json:"apikey"`
+}
+
+type EightballSettings struct {
+	Phrases    []string            `json:"phrases"`
+	Eastereggs map[string][]string `json:"eastereggs"`
+}
+type ChatSettings struct {
+	Lastperson     string `json:"lastperson"`
+	Lastamount     int    `json:"lastamount"`
+	Lasttext       string `json:"lasttext"`
+	Lasttextperson string `json:"lasttextperson"`
+}
+type Results struct {
+	Weather      WeatherSettings         `json:"weather"`
+	Chat         map[string]ChatSettings `json:"chat"`
+	Errormessage string                  `json:"errormessage"`
+	Eightball    EightballSettings       `json:"eightball"`
+}
 
 //--------------DO NOT MODIFY------------------------//
 
@@ -138,15 +196,6 @@ func send(message, chatid string) {
 }
 func testsend(message, chatid string) {
 	fmt.Println(message)
-}
-
-type Results struct {
-	Lastperson     string   `json:"lastperson"`
-	Lastamount     int      `json:"lastamount"`
-	Lasttext       string   `json:"lasttext"`
-	Lasttextperson string   `json:"lasttextperson"`
-	Errormessage   string   `json:"errormessage"`
-	Phrases        []string `json:"8ballwords"`
 }
 
 func readandparsesettings(location string) Results {
@@ -164,7 +213,7 @@ func readandparsesettings(location string) Results {
 	return Data
 }
 func writesettings(location string, Data Results) error {
-	jsondata, err := json.Marshal(Data)
+	jsondata, err := json.MarshalIndent(Data, "", "    ")
 	if err != nil {
 		return err
 	}
@@ -176,30 +225,31 @@ func writesettings(location string, Data Results) error {
 }
 
 var Data Results
+var chatinfo ChatSettings
 
 func main() {
 	fulltext := strings.Split(os.Args[1:][0], "|~|")
 	message, from, chatid, settingslocation := fulltext[0], fulltext[1], fulltext[2], fulltext[3]
 	Data = readandparsesettings(settingslocation)
+	chatinfo = Data.Chat[chatid]
 	ottomessage := false
 	if len(message) >= 4 {
-		section := strings.ToLower(message[:4])
-		if section == "otto" {
+		if strings.ToLower(message[:4]) == "otto" {
 			ottomessage = true
 			//check if allowed
 			allowedtorun := true
-			if from == Data.Lastperson {
-				Data.Lastamount += 1
-				if Data.Lastamount > 5 {
+			if from == chatinfo.Lastperson {
+				chatinfo.Lastamount += 1
+				if chatinfo.Lastamount > 5 {
 					allowedtorun = false
 				}
-				if Data.Lastamount == 5 {
+				if chatinfo.Lastamount == 5 {
 					send("You have reached your 5 consecutive text limit", chatid)
 				}
 
 			} else {
-				Data.Lastperson = from
-				Data.Lastamount = 1
+				chatinfo.Lastperson = from
+				chatinfo.Lastamount = 1
 			}
 			//send correct text
 			if allowedtorun {
@@ -211,17 +261,17 @@ func main() {
 							hasntBeenCalled = false
 							var result string
 							if value == "FUNCTION" {
-								result = funcmap[key](phrase, Data.Lasttextperson)
+								result = funcmap[key](phrase[len(key)+1:], chatinfo.Lasttextperson)
 							} else {
 								result = value
 							}
-							send(result, chatid)
+							testsend(result, chatid)
 							break
 						}
 					}
 				}
 				if hasntBeenCalled {
-					send(Data.Errormessage, chatid)
+					testsend(Data.Errormessage, chatid)
 				}
 			}
 			err := writesettings(settingslocation, Data)
@@ -232,8 +282,8 @@ func main() {
 		}
 	}
 	if ottomessage != true {
-		Data.Lasttext = message
-		Data.Lasttextperson = from
+		chatinfo.Lasttext = message
+		chatinfo.Lasttextperson = from
 		err := writesettings(settingslocation, Data)
 		if err != nil {
 			panic(err)
