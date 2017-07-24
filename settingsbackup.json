@@ -4,10 +4,10 @@
         "apikey": "6a4cbda1e239084151dea640a95d2a0c"
     },
     "chat": {
-        "lastperson": "Eleanor",
-        "lastamount": 1,
-        "lasttext": "What's wrong with you",
-        "lasttextperson": "Lucy Randoom"
+        "lastperson": "Someone",
+        "lastamount": 0,
+        "lasttext": "Well, something broke",
+        "lasttextperson": "Someone else"
     },
     "errormessage": "Sorry, I dont understand",
     "eightball": {
@@ -29,3 +29,4 @@
         }
     }
 }
+

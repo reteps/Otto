@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/alfredxing/calc/compute"
 	"io/ioutil"
 	"math/rand"
 	"net/http"
@@ -150,19 +151,30 @@ func Weather(message, from string) string {
 
 	weather := &WeatherDecoder{}
 	json.NewDecoder(resp.Body).Decode(weather)
-	response := fmt.Sprintf("Today in %s, it is %.2f degrees. The weather is %s and there is %.0f%% humidity.",
+	response := fmt.Sprintf("Right now in %s, it is %.2f degrees. The weather is %s and there is %.0f%% humidity.",
 		weather.Name, weather.Main["temp"], weather.Weather[0]["main"], weather.Main["humidity"])
 	return response
 }
 
+func Calc(message, from string) string {
+	if message == "" {
+		return "Calculate what?"
+	}
+	res, err := compute.Evaluate(message)
+	if err != nil {
+		return err.Error()
+	}
+	return strconv.FormatFloat(res, 'f', 4, 64)
+}
+
 var (
 	funcmap = map[string]func(string, string) string{"date": Date, "help": Help, "random": Random, "say": Say, "roll": Roll, "mock": Mock,
-		"flip": Flip, "magic": Magic, "will": Magic, "weather": Weather}
+		"flip": Flip, "magic": Magic, "will": Magic, "weather": Weather, "calc": Calc}
 	keywords = map[string]string{"hello": "hello there!", "version": "I am currently version 1.1beta",
 		"date": "FUNCTION", "help": "FUNCTION", "random": "FUNCTION", "say": "FUNCTION",
 		"what": "I am a imessage virtual assistant that runs when Peter's computer is on. Type 'otto help' to see all the commands I can do.",
 		"roll": "FUNCTION", "mock": "FUNCTION", "thanks": "you're welcome", "flip": "FUNCTION", "magic": "FUNCTION", "will": "FUNCTION",
-		"hi": "hi there!", "weather": "FUNCTION"}
+		"hi": "hi there!", "weather": "FUNCTION", "calc": "FUNCTION"}
 )
 
 type WeatherSettings struct {
@@ -208,7 +220,16 @@ func readandparsesettings(location string) Results {
 	Data := Results{}
 	err = json.Unmarshal(file, &Data)
 	if err != nil {
-		panic(err)
+		newlocation := fmt.Sprintf("%sbackup.json", location[:len(location)-5])
+		//try backup
+		newfile, err := ioutil.ReadFile(newlocation)
+		if err != nil {
+			panic(err)
+		}
+		err = json.Unmarshal(newfile, &Data)
+		if err != nil {
+			panic(err)
+		}
 	}
 	return Data
 }
