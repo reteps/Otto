@@ -6,8 +6,8 @@
     "chat": {
         "lastperson": "someone",
         "lastamount": 3,
-        "lasttext": "Yo ",
-        "lasttextperson": "Josh Chambers"
+        "lasttext": "Haha",
+        "lasttextperson": "Sorelle Werner"
     },
     "errormessage": "Sorry, I dont understand",
     "maxmessage": "You have reached your 5 consecutive text limit",
@@ -35,14 +35,23 @@
                 "take over",
                 "kill everyone"
             ],
+            "Peace duuuuude": [
+                "Hippie"
+            ],
             "YAYA": [
                 "YAYA"
+            ],
+            "Yep that's me": [
+                "Otto"
             ],
             "because reasons": [
                 "why"
             ],
             "super hippo": [
                 "hippo"
+            ],
+            "💀 ": [
+                "Dead"
             ]
         }
     }

@@ -4,39 +4,56 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/alfredxing/calc/compute"
-	"io/ioutil"
 	"math/rand"
 	"net/http"
-	"os"
-	"os/exec"
 	"strconv"
 	"strings"
 	"time"
 )
 
-//--------------FUNCTIONS----------------------//
-func Date(message, from string) string {
+//FUNCTION MAP
+var ottomap map[string]interface{}
+
+func init() {
+	ottomap = map[string]interface{}{"date": Date,
+		"help":    Help,
+		"random":  Random,
+		"say":     Say,
+		"roll":    Roll,
+		"mock":    Mock,
+		"flip":    Flip,
+		"magic":   Magic,
+		"will":    Magic,
+		"weather": Weather,
+		"calc":    Calc,
+		"egg":     Egg,
+		"hello":   "hello there!",
+		"version": "I am currently version 1.1beta",
+		"what":    "I am a imessage virtual assistant that runs when Peter's computer is on. Type 'otto help' to see all the commands I can do.",
+		"hi":      "hi there!",
+		"time":    Time,
+		"thanks":  "you're welcome",
+	}
+}
+
+//FUNCTIONS
+func Date() string {
 	t := time.Now()
 	format := fmt.Sprintf("Today is %s, %s %d, %d", t.Weekday(), t.Month(), t.Day(), t.Year())
 	return format
 }
-func Help(message, from string) string {
-	keys := make([]string, len(keywords))
+func Help() string {
+	keys := make([]string, len(ottomap))
 
 	i := 0
-	for k := range keywords {
+	for k := range ottomap {
 		keys[i] = k
 		i++
 	}
 	newmessage := "Commands include:\n" + strings.Join(keys, ", ")
 	return newmessage
 }
-func Randint(low, high int) string {
-	result := strconv.Itoa(rand.Intn((high+1)-low) + low)
-	return result
-
-}
-func Random(message, from string) string {
+func Random(message string) string {
 	if message == "" {
 		return "usage:random low high"
 	}
@@ -53,9 +70,9 @@ func Random(message, from string) string {
 		return "high must be bigger then low"
 	}
 	rand.Seed(time.Now().UTC().UnixNano())
-	return Randint(low, high)
+	return randint(low, high)
 }
-func Egg(message, from string) string {
+func Egg(message string) string {
 	if message == "" {
 		return "for example:`otto egg peace,hippie=Peace dude`"
 	}
@@ -68,13 +85,13 @@ func Egg(message, from string) string {
 	Data.Eightball.Eastereggs[egg] = triggers
 	return fmt.Sprintf("added easter egg for '%s' that is triggered by %v", egg, triggers)
 }
-func Say(message, from string) string {
+func Say(message string) string {
 	if message == "" {
 		return "say what?"
 	}
 	return message[1:]
 }
-func Roll(message, from string) string {
+func Roll(message string) string {
 	if message == "" {
 		return "roll what? ex. 2d20"
 	}
@@ -93,19 +110,11 @@ func Roll(message, from string) string {
 	var result []string
 	rand.Seed(time.Now().UTC().UnixNano())
 	for i := 0; i < dice; i++ {
-		result = append(result, Randint(1, num))
+		result = append(result, randint(1, num))
 	}
 	return strings.Join(result, ",")
 }
-func randbool() bool {
-	num := rand.Float64()
-	if num > 0.5 {
-		return true
-	} else {
-		return false
-	}
-}
-func Mock(message, from string) string {
+func Mock(message string) string {
 	rand.Seed(time.Now().UTC().UnixNano())
 	ftext := ""
 	for _, v := range Data.Chat.Lasttext {
@@ -119,7 +128,7 @@ func Mock(message, from string) string {
 	}
 	return ftext
 }
-func Flip(message, from string) string {
+func Flip(message string) string {
 	rand.Seed(time.Now().UTC().UnixNano())
 	state := randbool()
 	if state == true {
@@ -128,7 +137,7 @@ func Flip(message, from string) string {
 		return "tails"
 	}
 }
-func Magic(message, from string) string {
+func Magic(message string) string {
 	rand.Seed(time.Now().UTC().UnixNano())
 	for key, value := range Data.Eightball.Eastereggs {
 		for _, keyword := range value {
@@ -138,10 +147,10 @@ func Magic(message, from string) string {
 		}
 	}
 	//normal, no secrets
-	num, _ := strconv.Atoi(Randint(0, len(Data.Eightball.Phrases)-1))
+	num, _ := strconv.Atoi(randint(0, len(Data.Eightball.Phrases)-1))
 	return Data.Eightball.Phrases[num]
 }
-func Weather(message, from string) string {
+func Weather(message string) string {
 	var location string
 	if message == "" {
 		location = Data.Weather.Default
@@ -177,7 +186,7 @@ func Weather(message, from string) string {
 	return response
 }
 
-func Calc(message, from string) string {
+func Calc(message string) string {
 	if message == "" {
 		return "Calculate what?"
 	}
@@ -187,18 +196,11 @@ func Calc(message, from string) string {
 	}
 	return strconv.FormatFloat(res, 'f', 4, 64)
 }
+func Time() string {
+	return "It is " + time.Now().Format(time.Kitchen)
+}
 
-var (
-	funcmap = map[string]func(string, string) string{"date": Date, "help": Help, "random": Random, "say": Say, "roll": Roll, "mock": Mock,
-		"flip": Flip, "magic": Magic, "will": Magic, "weather": Weather, "calc": Calc, "egg": Egg}
-	keywords = map[string]string{"hello": "hello there!", "version": "I am currently version 1.1beta",
-		"date": "FUNCTION", "help": "FUNCTION", "random": "FUNCTION", "say": "FUNCTION",
-		"what": "I am a imessage virtual assistant that runs when Peter's computer is on. Type 'otto help' to see all the commands I can do.",
-		"roll": "FUNCTION", "mock": "FUNCTION", "thanks": "you're welcome", "flip": "FUNCTION", "magic": "FUNCTION", "will": "FUNCTION",
-		"hi": "hi there!", "weather": "FUNCTION", "calc": "FUNCTION", "time": "It is " + time.Now().Format(time.Kitchen)}
-	//egg removed
-)
-
+//SETTINGS
 type WeatherSettings struct {
 	Default string `json:"default"`
 	Apikey  string `json:"apikey"`
@@ -222,113 +224,19 @@ type Results struct {
 	Eightball    EightballSettings `json:"eightball"`
 }
 
-//--------------DO NOT MODIFY------------------------//
+//helper functions
 
-func send(message, chatid string) {
-	mybuddy := fmt.Sprintf("set mybuddy to a reference to text chat id \"%s\"", chatid)
-	send := fmt.Sprintf("send \"%s\" to mybuddy", message)
-	exec.Command("/usr/bin/osascript", "-e", "tell application \"Messages\"", "-e", mybuddy, "-e", send, "-e", "end tell").Run()
-}
-func testsend(message, chatid string) {
-	fmt.Println(message)
-}
-
-func readandparsesettings(location string) Results {
-
-	file, err := ioutil.ReadFile(location)
-
-	if err != nil {
-		panic(err)
+func randbool() bool {
+	num := rand.Float64()
+	if num > 0.5 {
+		return true
+	} else {
+		return false
 	}
-	Data := Results{}
-	err = json.Unmarshal(file, &Data)
-	if err != nil {
-		newlocation := fmt.Sprintf("%sbackup.json", location[:len(location)-5])
-		//try backup
-		newfile, err := ioutil.ReadFile(newlocation)
-		if err != nil {
-			panic(err)
-		}
-		err = json.Unmarshal(newfile, &Data)
-		if err != nil {
-			panic(err)
-		}
-	}
-	return Data
-}
-func writesettings(location string, Data Results) error {
-	jsondata, err := json.MarshalIndent(Data, "", "    ")
-	if err != nil {
-		return err
-	}
-	err = ioutil.WriteFile(location, jsondata, 0644)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
-var Data Results
+func randint(low, high int) string {
+	result := strconv.Itoa(rand.Intn((high+1)-low) + low)
+	return result
 
-func main() {
-	fulltext := strings.Split(os.Args[1:][0], "|~|")
-	message, from, chatid, settingslocation := fulltext[0], fulltext[1], fulltext[2], fulltext[3]
-	Data = readandparsesettings(settingslocation)
-	ottomessage := false
-	if len(message) >= 4 {
-		if strings.ToLower(message[:4]) == "otto" {
-			ottomessage = true
-			//check if allowed
-			allowedtorun := true
-			if from == Data.Chat.Lastperson {
-				Data.Chat.Lastamount += 1
-				if Data.Chat.Lastamount > 5 {
-					allowedtorun = false
-				}
-				if Data.Chat.Lastamount == 5 {
-					send(Data.Maxmessage, chatid)
-				}
-
-			} else {
-				Data.Chat.Lastperson = from
-				Data.Chat.Lastamount = 1
-			}
-			//send correct text
-			if allowedtorun {
-				phrase := message[4:]
-				hasntBeenCalled := true
-				for key, value := range keywords {
-					if len(phrase) > len(key) {
-						if phrase[1:len(key)+1] == key {
-							hasntBeenCalled = false
-							var result string
-							if value == "FUNCTION" {
-								result = funcmap[key](phrase[len(key)+1:], Data.Chat.Lasttextperson)
-							} else {
-								result = value
-							}
-							send(result, chatid)
-							break
-						}
-					}
-				}
-				if hasntBeenCalled {
-					send(Data.Errormessage, chatid)
-				}
-			}
-			err := writesettings(settingslocation, Data)
-			if err != nil {
-				panic(err)
-			}
-
-		}
-	}
-	if ottomessage != true {
-		Data.Chat.Lasttext = message
-		Data.Chat.Lasttextperson = from
-		err := writesettings(settingslocation, Data)
-		if err != nil {
-			panic(err)
-		}
-	}
 }

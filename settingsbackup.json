@@ -4,8 +4,8 @@
         "apikey": "6a4cbda1e239084151dea640a95d2a0c"
     },
     "chat": {
-        "lastperson": "Josh Chambers",
-        "lastamount": 1,
+        "lastperson": "Sorelle Werner",
+        "lastamount": 2,
         "lasttext": "Yo ",
         "lasttextperson": "Josh Chambers"
     },
@@ -30,19 +30,19 @@
             "I ship it": [
                 "ship"
             ],
+            "I will not.": [
+                "domination",
+                "take over",
+                "kill everyone"
+            ],
             "YAYA": [
                 "YAYA"
             ],
-            "super hippo": [
-                "hippo"
-            ],
             "because reasons": [
                 "why"
-            ]
-            "I will not.": [
-              "domination",
-              "take over",
-              "kill everyone"
+            ],
+            "super hippo": [
+                "hippo"
             ]
         }
     }

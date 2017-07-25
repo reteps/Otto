@@ -5,4 +5,4 @@ if len(sys.argv) > 1:
     message = ' '.join(sys.argv[1:])
 else:
     message = input('message > ')
-os.system("cd ~/go/src/Otto;go run main.go \"{}|~|{}|~|{}|~|{}\"".format(message,"someone","iMessage;+;chat508017006480766416","/Users/Peter/go/src/Otto/settings.json"))
+os.system("cd ~/go/src/Otto;go run *.go \"{}|~|{}|~|{}|~|{}\"".format(message,"someone","iMessage;+;chat508017006480766416","/Users/Peter/go/src/Otto/settings.json"))
