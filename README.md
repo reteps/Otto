@@ -23,17 +23,15 @@ set it up:
 + move `otto.applescript` to `~/Library/Application Scripts/com.apple.iChat` 
 + select `otto.applescript` as your imessage handler.
 
-contributing:
-+ fork this repo
-+ add your function to th
-+ create your function inside `library.go`. Make sure it is one of these types:
+adding a function:
+1. create your function inside `library.go`. Make sure it is one of these types:
   + `func(string, string) string` _calls a function with message and from as arguments_
   + `func(string) string` _calls a function with message as the argument_
   + `func() string` _calls a function that returns a string_
   + `string` _returns a message_
 
-+ add your function and it's keyword to `ottomap` inside `library.go`
-+ if your function takes arguments, make sure it handles edge cases including:
+2. add your function and it's keyword to `ottomap` inside `library.go`
+3. if your function takes arguments, make sure it handles edge cases including:
   + no arguments called
   + space is first character of argument
   + incorrect arguments
