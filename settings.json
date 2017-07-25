@@ -5,9 +5,9 @@
     },
     "chat": {
         "lastperson": "someone",
-        "lastamount": 5,
-        "lasttext": "What's happening",
-        "lasttextperson": "Sorelle Werner"
+        "lastamount": 3,
+        "lasttext": "Yo ",
+        "lasttextperson": "Josh Chambers"
     },
     "errormessage": "Sorry, I dont understand",
     "maxmessage": "You have reached your 5 consecutive text limit",
@@ -30,9 +30,19 @@
             "I ship it": [
                 "ship"
             ],
-            "Peace dude": [
-                "peace",
-                "hippie"
+            "I will not.": [
+                "domination",
+                "take over",
+                "kill everyone"
+            ],
+            "YAYA": [
+                "YAYA"
+            ],
+            "because reasons": [
+                "why"
+            ],
+            "super hippo": [
+                "hippo"
             ]
         }
     }

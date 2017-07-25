@@ -57,13 +57,16 @@ func Random(message, from string) string {
 }
 func Egg(message, from string) string {
 	if message == "" {
-		return "otto egg word1,word2,word3:output\nfor example:`otto egg peace,hippie:Peace dude`"
+		return "for example:`otto egg peace,hippie=Peace dude`"
 	}
-	parts := strings.Split(message[1:], ":")
+	parts := strings.Split(message[1:], "=")
+	if len(parts) != 2 {
+		return "Invalid easter egg for otto magic."
+	}
 	triggers := strings.Split(parts[0], ",")
 	egg := parts[1]
 	Data.Eightball.Eastereggs[egg] = triggers
-	return fmt.Sprintf("added easter egg for %s that is triggered by %v", egg, triggers)
+	return fmt.Sprintf("added easter egg for '%s' that is triggered by %v", egg, triggers)
 }
 func Say(message, from string) string {
 	if message == "" {
@@ -192,7 +195,8 @@ var (
 		"date": "FUNCTION", "help": "FUNCTION", "random": "FUNCTION", "say": "FUNCTION",
 		"what": "I am a imessage virtual assistant that runs when Peter's computer is on. Type 'otto help' to see all the commands I can do.",
 		"roll": "FUNCTION", "mock": "FUNCTION", "thanks": "you're welcome", "flip": "FUNCTION", "magic": "FUNCTION", "will": "FUNCTION",
-		"hi": "hi there!", "weather": "FUNCTION", "calc": "FUNCTION", "egg": "FUNCTION"}
+		"hi": "hi there!", "weather": "FUNCTION", "calc": "FUNCTION", "time": "It is " + time.Now().Format(time.Kitchen)}
+	//egg removed
 )
 
 type WeatherSettings struct {
@@ -282,7 +286,7 @@ func main() {
 					allowedtorun = false
 				}
 				if Data.Chat.Lastamount == 5 {
-					testsend(Data.Maxmessage, chatid)
+					send(Data.Maxmessage, chatid)
 				}
 
 			} else {
@@ -303,13 +307,13 @@ func main() {
 							} else {
 								result = value
 							}
-							testsend(result, chatid)
+							send(result, chatid)
 							break
 						}
 					}
 				}
 				if hasntBeenCalled {
-					testsend(Data.Errormessage, chatid)
+					send(Data.Errormessage, chatid)
 				}
 			}
 			err := writesettings(settingslocation, Data)

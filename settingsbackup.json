@@ -4,10 +4,10 @@
         "apikey": "6a4cbda1e239084151dea640a95d2a0c"
     },
     "chat": {
-        "lastperson": "someone",
-        "lastamount": 0,
-        "lasttext": "What's happening",
-        "lasttextperson": "Sorelle Werner"
+        "lastperson": "Josh Chambers",
+        "lastamount": 1,
+        "lasttext": "Yo ",
+        "lasttextperson": "Josh Chambers"
     },
     "errormessage": "Sorry, I dont understand",
     "maxmessage": "You have reached your 5 consecutive text limit",
@@ -23,12 +23,26 @@
             "no way"
         ],
         "eastereggs": {
-            "I ship it": [
-                "ship"
-            ],
             "42": [
                 "meaning of life",
                 "purpose of life"
+            ],
+            "I ship it": [
+                "ship"
+            ],
+            "YAYA": [
+                "YAYA"
+            ],
+            "super hippo": [
+                "hippo"
+            ],
+            "because reasons": [
+                "why"
+            ]
+            "I will not.": [
+              "domination",
+              "take over",
+              "kill everyone"
             ]
         }
     }
