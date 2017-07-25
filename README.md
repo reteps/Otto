@@ -13,11 +13,9 @@ features:
 + customizeable settings
 + settings backup (if your settings file gets corrupted)
 
-bugs / annoyances:
-+ There is only 1 chat room stored, so data from the other chat can show up
-  + this is especially seen in `otto mock`
+bugs:
++ There is only 1 chat room stored, so data from other chats can show up
 + Double messages - otto replies twice. This happens when you have unread messages in 1 chat, and otto is called in another.
-  + otto thinks it gets called twice
 
 set it up:
 + clone this repo and give a star.
@@ -26,10 +24,15 @@ set it up:
 + select `otto.applescript` as your imessage handler.
 
 contributing:
-+ clone this repo
-+ add your function - make sure you do it in the format `function(message, from string) string`
-+ add your function to the `funcList`
-+ add your function to the `keywords`
++ fork this repo
++ add your function to th
++ create your function inside `library.go`. Make sure it is one of these types:
+  + `func(string, string) string` _calls a function with message and from as arguments_
+  + `func(string) string` _calls a function with message as the argument_
+  + `func() string` _calls a function that returns a string_
+  + `string` _returns a message_
+
++ add your function and it's keyword to `ottomap` inside `library.go`
 + if your function takes arguments, make sure it handles edge cases including:
   + no arguments called
   + space is first character of argument
