@@ -1,7 +1,6 @@
 # Otto
-an imessage bot
 
-otto is a group chat imessages OSX handler. It runs in applescript with a golang parser.  
+otto is a imessage OSX chat handler. It runs in applescript with a golang parser.  
 
 
 imessage chat syntax:  
@@ -13,6 +12,12 @@ features:
 + modular commands
 + customizeable settings
 + settings backup (if your settings file gets corrupted)
+
+bugs / annoyances:
++ There is only 1 chat room stored, so data from the other chat can show up
+  + this is especially seen in `otto mock`
++ Double messages - otto replies twice. This happens when you have unread messages in 1 chat, and otto is called in another.
+  + otto thinks it gets called twice
 
 set it up:
 + clone this repo and give a star.
@@ -27,6 +32,7 @@ contributing:
 + add your function to the `keywords`
 + if your function takes arguments, make sure it handles edge cases including:
   + no arguments called
+  + space is first character of argument
   + incorrect arguments
 
 DISCLAIMER:
