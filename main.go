@@ -55,6 +55,16 @@ func Random(message, from string) string {
 	rand.Seed(time.Now().UTC().UnixNano())
 	return Randint(low, high)
 }
+func Egg(message, from string) string {
+	if message == "" {
+		return "otto egg word1,word2,word3:output\nfor example:`otto egg peace,hippie:Peace dude`"
+	}
+	parts := strings.Split(message[1:], ":")
+	triggers := strings.Split(parts[0], ",")
+	egg := parts[1]
+	Data.Eightball.Eastereggs[egg] = triggers
+	return fmt.Sprintf("added easter egg for %s that is triggered by %v", egg, triggers)
+}
 func Say(message, from string) string {
 	if message == "" {
 		return "say what?"
@@ -177,12 +187,12 @@ func Calc(message, from string) string {
 
 var (
 	funcmap = map[string]func(string, string) string{"date": Date, "help": Help, "random": Random, "say": Say, "roll": Roll, "mock": Mock,
-		"flip": Flip, "magic": Magic, "will": Magic, "weather": Weather, "calc": Calc}
+		"flip": Flip, "magic": Magic, "will": Magic, "weather": Weather, "calc": Calc, "egg": Egg}
 	keywords = map[string]string{"hello": "hello there!", "version": "I am currently version 1.1beta",
 		"date": "FUNCTION", "help": "FUNCTION", "random": "FUNCTION", "say": "FUNCTION",
 		"what": "I am a imessage virtual assistant that runs when Peter's computer is on. Type 'otto help' to see all the commands I can do.",
 		"roll": "FUNCTION", "mock": "FUNCTION", "thanks": "you're welcome", "flip": "FUNCTION", "magic": "FUNCTION", "will": "FUNCTION",
-		"hi": "hi there!", "weather": "FUNCTION", "calc": "FUNCTION"}
+		"hi": "hi there!", "weather": "FUNCTION", "calc": "FUNCTION", "egg": "FUNCTION"}
 )
 
 type WeatherSettings struct {

@@ -5,7 +5,7 @@
     },
     "chat": {
         "lastperson": "someone",
-        "lastamount": 2,
+        "lastamount": 5,
         "lasttext": "What's happening",
         "lasttextperson": "Sorelle Werner"
     },
@@ -29,6 +29,10 @@
             ],
             "I ship it": [
                 "ship"
+            ],
+            "Peace dude": [
+                "peace",
+                "hippie"
             ]
         }
     }
