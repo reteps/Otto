@@ -4,12 +4,13 @@
         "apikey": "6a4cbda1e239084151dea640a95d2a0c"
     },
     "chat": {
-        "lastperson": "Someone",
+        "lastperson": "someone",
         "lastamount": 0,
-        "lasttext": "Well, something broke",
-        "lasttextperson": "Someone else"
+        "lasttext": "What's happening",
+        "lasttextperson": "Sorelle Werner"
     },
     "errormessage": "Sorry, I dont understand",
+    "maxmessage": "You have reached your 5 consecutive text limit",
     "eightball": {
         "phrases": [
             "yes",
@@ -22,11 +23,13 @@
             "no way"
         ],
         "eastereggs": {
-            "BACKUP...": [
-                "BACKUP",
-                "BROKEN"
+            "I ship it": [
+                "ship"
+            ],
+            "42": [
+                "meaning of life",
+                "purpose of life"
             ]
         }
     }
 }
-

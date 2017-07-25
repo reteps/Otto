@@ -1,0 +1,5 @@
+#!/usr/bin/env python3
+import os
+location = "/Users/Peter/go/src/Otto/settings.json"
+location2 = "/Users/Peter/go/src/Otto/settingsbackup.json"
+os.system("cp {} {}".format(location,location2))

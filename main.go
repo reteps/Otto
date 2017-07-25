@@ -40,7 +40,7 @@ func Random(message, from string) string {
 	if message == "" {
 		return "usage:random low high"
 	}
-	values := strings.Split(message, " ")
+	values := strings.Split(message[1:], " ")
 	low, err := strconv.Atoi(values[0])
 	if err != nil {
 		return "invalid low number"
@@ -65,7 +65,7 @@ func Roll(message, from string) string {
 	if message == "" {
 		return "roll what? ex. 2d20"
 	}
-	sections := strings.Split(message, "d")
+	sections := strings.Split(message[1:], "d")
 	dice, err := strconv.Atoi(sections[0])
 	if err != nil {
 		return "invalid dice amount"
@@ -75,7 +75,7 @@ func Roll(message, from string) string {
 		return "invalid high roll"
 	}
 	if dice > 100 || num > 100 {
-		return "max number is 100"
+		return "highest number to roll / dice to have is 100"
 	}
 	var result []string
 	rand.Seed(time.Now().UTC().UnixNano())
@@ -204,6 +204,7 @@ type Results struct {
 	Weather      WeatherSettings   `json:"weather"`
 	Chat         ChatSettings      `json:"chat"`
 	Errormessage string            `json:"errormessage"`
+	Maxmessage   string            `json:"maxmessage"`
 	Eightball    EightballSettings `json:"eightball"`
 }
 
@@ -271,7 +272,7 @@ func main() {
 					allowedtorun = false
 				}
 				if Data.Chat.Lastamount == 5 {
-					send("You have reached your 5 consecutive text limit", chatid)
+					testsend(Data.Maxmessage, chatid)
 				}
 
 			} else {
@@ -292,13 +293,13 @@ func main() {
 							} else {
 								result = value
 							}
-							send(result, chatid)
+							testsend(result, chatid)
 							break
 						}
 					}
 				}
 				if hasntBeenCalled {
-					send(Data.Errormessage, chatid)
+					testsend(Data.Errormessage, chatid)
 				}
 			}
 			err := writesettings(settingslocation, Data)
