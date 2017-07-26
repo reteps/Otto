@@ -18,25 +18,26 @@ var ottomap map[string]interface{}
 
 func init() {
 	ottomap = map[string]interface{}{"date": Date,
-		"help":    Help,
-		"random":  Random,
-		"say":     Say,
-		"roll":    Roll,
-		"mock":    Mock,
-		"flip":    Flip,
-		"magic":   Magic,
-		"will":    Magic,
-		"weather": Weather,
-		"calc":    Calc,
-		"egg":     Egg,
-		"hello":   "hello there!",
-		"version": "I am currently version 1.1beta",
-		"what":    "I am a imessage virtual assistant that runs when Peter's computer is on. Type 'otto help' to see all the commands I can do.",
-		"hi":      "hi there!",
-		"time":    Time,
-		"thanks":  "you're welcome",
-		"google":  Google, //gets first span
-		"wiki":    Wiki,
+		"help":     Help,
+		"random":   Random,
+		"say":      Say,
+		"roll":     Roll,
+		"mock":     Mock,
+		"flip":     Flip,
+		"magic":    Magic,
+		"will":     Magic,
+		"weather":  Weather,
+		"calc":     Calc,
+		"egg":      Egg, //eightball easter egg
+		"hello":    "hello there!",
+		"version":  "I am currently version 1.1beta",
+		"what":     "I am a imessage virtual assistant that runs when Peter's computer is on. Type 'otto help' to see all the commands I can do.",
+		"hi":       "hi there!",
+		"time":     Time, //running off host computer
+		"thanks":   "you're welcome",
+		"google":   Google,   //gets first span
+		"wiki":     Wiki,     //link
+		"wikitext": Wikitext, //intro paragraph
 	}
 }
 
@@ -57,16 +58,19 @@ func Wiki(message string) string {
 	}
 	defer resp.Body.Close()
 	urllist := result1[len(result1)-1].([]interface{})
-	fmt.Println(urllist)
 	if len(urllist) == 0 {
 		return "Wikipedia couldn't find that page"
 	}
 	newurl := urllist[0].(string)
 	return newurl
 }
-func brokenwiki(newurl string) string {
+func Wikitext(message string) string {
+	newurl := Wiki(message)
+	if strings.Contains(newurl, "Wikipedia couldn't find that page") || strings.Contains(newurl, "error wikisearch") {
+		return newurl
+	}
 	page := strings.Split(newurl, "/")
-	pageurl := fmt.Sprintf("https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=%s&format=json", page[len(page)-1])
+	pageurl := fmt.Sprintf("https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=%s&format=json", strings.Replace(page[len(page)-1], "_", "%20", -1))
 	//PART 2
 	type Wikipage struct {
 		Pageid  int    `json:"pageid"`

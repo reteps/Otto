@@ -5,9 +5,9 @@
     },
     "chat": {
         "lastperson": "someone",
-        "lastamount": 4,
-        "lasttext": ":(",
-        "lasttextperson": "Lucy Randoom"
+        "lastamount": 1,
+        "lasttext": "Lol",
+        "lasttextperson": "Eleanor"
     },
     "errormessage": "Sorry, I dont understand",
     "maxmessage": "You have reached your 5 consecutive text limit",

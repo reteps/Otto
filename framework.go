@@ -11,7 +11,7 @@ import (
 
 func send(message, chatid string) {
 	mybuddy := fmt.Sprintf("set mybuddy to a reference to text chat id \"%s\"", chatid)
-	send := fmt.Sprintf("send \"%s\" to mybuddy", message)
+	send := fmt.Sprintf("send \"%s\" to mybuddy", strings.Replace(message, "\"", "\\\"", -1))
 	exec.Command("/usr/bin/osascript", "-e", "tell application \"Messages\"", "-e", mybuddy, "-e", send, "-e", "end tell").Run()
 }
 func testsend(message, chatid string) {
