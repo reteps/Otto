@@ -48,14 +48,12 @@ func Wiki(message string) string {
 	url := fmt.Sprintf("https://en.wikipedia.org/w/api.php?action=opensearch&search=%s&limit=1&namespace=0&format=json", message[1:])
 	resp, err := http.Get(url)
 	if err != nil {
-		fmt.Println("OH NO 1")
-		return err.Error()
+		return "read error wikisearch" + err.Error()
 	}
 	var result1 []interface{}
 	err = json.NewDecoder(resp.Body).Decode(&result1)
 	if err != nil {
-		fmt.Println("OH NO 2")
-		return err.Error()
+		return "decode error wikisearch " + err.Error()
 	}
 	defer resp.Body.Close()
 	urllist := result1[len(result1)-1].([]interface{})
@@ -63,7 +61,9 @@ func Wiki(message string) string {
 		return "Wikipedia couldn't find that page"
 	}
 	newurl := urllist[0].(string)
-
+	return newurl
+}
+func brokenwiki(newurl string) string {
 	page := strings.Split(newurl, "/")
 	pageurl := fmt.Sprintf("https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=%s&format=json", page[len(page)-1])
 	//PART 2
@@ -77,15 +77,14 @@ func Wiki(message string) string {
 		Complete string                         `json:"batchcomplete"`
 		Query    map[string]map[string]Wikipage `json:"query"`
 	}
-	resp, err = http.Get(pageurl)
+	resp, err := http.Get(pageurl)
 	if err != nil {
-		fmt.Println("OH NO 3")
-		return err.Error()
+		return "read error wikidata " + err.Error()
 	}
 	wikidata := &Wikidata{}
 	err = json.NewDecoder(resp.Body).Decode(wikidata)
 	if err != nil {
-		return err.Error()
+		return "decode error wikidata " + err.Error()
 	}
 	defer resp.Body.Close()
 	var result string
@@ -97,7 +96,10 @@ func Wiki(message string) string {
 		}
 		break
 	}
-	return result[:997] + "..."
+	if len(result) > 997 {
+		return result[:997] + "..."
+	}
+	return result
 
 }
 
