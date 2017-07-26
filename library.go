@@ -44,9 +44,7 @@ func Google(message string) string {
 	if message == "" {
 		return "google what?"
 	}
-	fmt.Println(message[1:])
 	url := "http://www.google.com/search?q=" + strings.Replace(strings.Replace(strings.Replace(message[1:], " ", "|~|", -1), "+", "%2B", -1), "|~|", "+", -1)
-	fmt.Println(url)
 	response, err := http.Get(url)
 	if err != nil {
 		return err.Error()
