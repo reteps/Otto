@@ -6,8 +6,8 @@
     "chat": {
         "lastperson": "someone",
         "lastamount": 5,
-        "lasttext": "Spam",
-        "lasttextperson": "Sorelle Werner"
+        "lasttext": "One was at an Ariana grande concert",
+        "lasttextperson": "Josh Chambers"
     },
     "errormessage": "Sorry, I dont understand",
     "maxmessage": "You have reached your 5 consecutive text limit",

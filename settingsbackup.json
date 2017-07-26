@@ -4,9 +4,9 @@
         "apikey": "6a4cbda1e239084151dea640a95d2a0c"
     },
     "chat": {
-        "lastperson": "Sorelle Werner",
-        "lastamount": 2,
-        "lasttext": "Yo ",
+        "lastperson": "someone",
+        "lastamount": 5,
+        "lasttext": "One was at an Ariana grande concert",
         "lasttextperson": "Josh Chambers"
     },
     "errormessage": "Sorry, I dont understand",
@@ -35,14 +35,23 @@
                 "take over",
                 "kill everyone"
             ],
+            "Peace duuuuude": [
+                "Hippie"
+            ],
             "YAYA": [
                 "YAYA"
+            ],
+            "Yep that's me": [
+                "Otto"
             ],
             "because reasons": [
                 "why"
             ],
             "super hippo": [
                 "hippo"
+            ],
+            "💀 ": [
+                "Dead"
             ]
         }
     }

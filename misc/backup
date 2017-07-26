@@ -3,3 +3,4 @@ import os
 location = "/Users/Peter/go/src/Otto/settings.json"
 location2 = "/Users/Peter/go/src/Otto/settingsbackup.json"
 os.system("cp {} {}".format(location,location2))
+os.system("cp /Users/Peter/go/bin/Otto /Users/Peter/go/src/Otto/;mv /Users/Peter/go/src/Otto/Otto /Users/Peter/go/src/Otto/ottohandler")
