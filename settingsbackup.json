@@ -5,9 +5,9 @@
     },
     "chat": {
         "lastperson": "someone",
-        "lastamount": 1,
-        "lasttext": "Also I'd be hard to see your other notifications when ur locked screen is flooded by this one",
-        "lasttextperson": "17049426608"
+        "lastamount": 5,
+        "lasttext": "Dang it 😂 ",
+        "lasttextperson": "Eleanor"
     },
     "errormessage": "Sorry, I dont understand",
     "maxmessage": "You have reached your 5 consecutive text limit",
@@ -27,6 +27,12 @@
                 "meaning of life",
                 "purpose of life"
             ],
+            "5 4 3 2 1 BOOM": [
+                "selfdestruct"
+            ],
+            "5 4 3 2 1........BOOMMMMMM": [
+                "Selfdestruct"
+            ],
             "I ship it": [
                 "ship"
             ],
@@ -44,11 +50,11 @@
             "Yep that's me": [
                 "Otto"
             ],
-            "because reasons": [
-                "why"
-            ],
             "super hippo": [
                 "hippo"
+            ],
+            "your mom": [
+                "who"
             ],
             "💀 ": [
                 "Dead"

@@ -35,14 +35,73 @@ func init() {
 		"hi":      "hi there!",
 		"time":    Time,
 		"thanks":  "you're welcome",
-		"google":  Google,
+		"google":  Google, //gets first span
+		"wiki":    Wiki,
 	}
 }
 
 //FUNCTIONS
+func Wiki(message string) string {
+	if message == "" {
+		return "search wikipedia for what?"
+	}
+	url := fmt.Sprintf("https://en.wikipedia.org/w/api.php?action=opensearch&search=%s&limit=1&namespace=0&format=json", message[1:])
+	resp, err := http.Get(url)
+	if err != nil {
+		return err.Error()
+	}
+	var result1 []interface{}
+	err = json.NewDecoder(resp.Body).Decode(&result1)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+	urllist := result1[len(result1)-1].([]interface{})
+	if len(urllist) == 0 {
+		return "Wikipedia couldn't find that page"
+	}
+	newurl := urllist[0].(string)
+
+	page := strings.Split(newurl, "/")
+	pageurl := fmt.Sprintf("https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=%s&format=json", page[len(page)-1])
+	//PART 2
+	type Wikipage struct {
+		Pageid  int    `json:"pageid"`
+		Ns      int    `json:"ns"`
+		Title   string `json:"title"`
+		Extract string `json:"extract"`
+	}
+	type Wikidata struct {
+		Complete string                         `json:"batchcomplete"`
+		Query    map[string]map[string]Wikipage `json:"query"`
+	}
+	resp, err = http.Get(pageurl)
+	if err != nil {
+		panic(err)
+		//return err.Error()
+	}
+	wikidata := &Wikidata{}
+	err = json.NewDecoder(resp.Body).Decode(wikidata)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+	var result string
+	for k, _ := range wikidata.Query {
+		for k1, _ := range wikidata.Query[k] {
+
+			result = wikidata.Query[k][k1].Extract
+			break
+		}
+		break
+	}
+	return result
+
+}
+
 func Google(message string) string {
 	if message == "" {
-		return "google what?"
+		return "google what? NOTE:this doesn't work perfectly"
 	}
 	url := "http://www.google.com/search?q=" + strings.Replace(strings.Replace(strings.Replace(message[1:], " ", "|~|", -1), "+", "%2B", -1), "|~|", "+", -1)
 	response, err := http.Get(url)
@@ -188,10 +247,6 @@ func Weather(message string) string {
 	}
 
 	url := fmt.Sprintf("http://api.openweathermap.org/data/2.5/weather?q=%s&appid=%s&units=imperial", location, Data.Weather.Apikey)
-	resp, err := http.Get(url)
-	if err != nil {
-		return err.Error()
-	}
 
 	type WeatherDecoder struct {
 		Main          map[string]interface{}   `json:"main"`
@@ -208,8 +263,13 @@ func Weather(message string) string {
 		Cod           int                      `json:"cod"`
 	}
 
+	resp, err := http.Get(url)
+	if err != nil {
+		return err.Error()
+	}
 	weather := &WeatherDecoder{}
 	json.NewDecoder(resp.Body).Decode(weather)
+
 	response := fmt.Sprintf("Right now in %s, it is %.2f degrees. The weather is %s and there is %.0f%% humidity.",
 		weather.Name, weather.Main["temp"], weather.Weather[0]["main"], weather.Main["humidity"])
 	return response
@@ -254,7 +314,6 @@ type Results struct {
 }
 
 //helper functions
-
 func randbool() bool {
 	num := rand.Float64()
 	if num > 0.5 {
