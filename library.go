@@ -53,7 +53,7 @@ func Wiki(message string) string {
 	var result1 []interface{}
 	err = json.NewDecoder(resp.Body).Decode(&result1)
 	if err != nil {
-		panic(err)
+		return err.Error()
 	}
 	defer resp.Body.Close()
 	urllist := result1[len(result1)-1].([]interface{})
@@ -77,13 +77,12 @@ func Wiki(message string) string {
 	}
 	resp, err = http.Get(pageurl)
 	if err != nil {
-		panic(err)
-		//return err.Error()
+		return err.Error()
 	}
 	wikidata := &Wikidata{}
 	err = json.NewDecoder(resp.Body).Decode(wikidata)
 	if err != nil {
-		panic(err)
+		return err.Error()
 	}
 	defer resp.Body.Close()
 	var result string
