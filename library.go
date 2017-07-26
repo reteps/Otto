@@ -101,8 +101,8 @@ func Wikitext(message string) string {
 		}
 		break
 	}
-	if len(result) > 997 {
-		return result[:997] + "..."
+	if len(result) > 500 {
+		return result[:500] + "..."
 	}
 	return result
 
