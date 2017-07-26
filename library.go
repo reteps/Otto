@@ -48,11 +48,13 @@ func Wiki(message string) string {
 	url := fmt.Sprintf("https://en.wikipedia.org/w/api.php?action=opensearch&search=%s&limit=1&namespace=0&format=json", message[1:])
 	resp, err := http.Get(url)
 	if err != nil {
+		fmt.Println("OH NO 1")
 		return err.Error()
 	}
 	var result1 []interface{}
 	err = json.NewDecoder(resp.Body).Decode(&result1)
 	if err != nil {
+		fmt.Println("OH NO 2")
 		return err.Error()
 	}
 	defer resp.Body.Close()
@@ -77,6 +79,7 @@ func Wiki(message string) string {
 	}
 	resp, err = http.Get(pageurl)
 	if err != nil {
+		fmt.Println("OH NO 3")
 		return err.Error()
 	}
 	wikidata := &Wikidata{}
@@ -94,7 +97,7 @@ func Wiki(message string) string {
 		}
 		break
 	}
-	return result
+	return result[:997] + "..."
 
 }
 

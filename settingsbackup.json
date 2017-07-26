@@ -4,10 +4,10 @@
         "apikey": "6a4cbda1e239084151dea640a95d2a0c"
     },
     "chat": {
-        "lastperson": "someone",
-        "lastamount": 2,
-        "lasttext": "Oooooookay",
-        "lasttextperson": "Eleanor"
+        "lastperson": "Lucy Randoom",
+        "lastamount": 1,
+        "lasttext": "poof",
+        "lasttextperson": "Charlie Boye"
     },
     "errormessage": "Sorry, I dont understand",
     "maxmessage": "You have reached your 5 consecutive text limit",
