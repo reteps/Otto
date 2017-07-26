@@ -105,13 +105,13 @@ func main() {
 							default:
 								result = "This function was not created properly."
 							}
-							testsend(result, chatid)
+							send(result, chatid)
 							break
 						}
 					}
 				}
 				if hasntBeenCalled {
-					testsend(Data.Errormessage, chatid)
+					send(Data.Errormessage, chatid)
 				}
 			}
 			err := writesettings(settingslocation, Data)

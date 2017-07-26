@@ -3,7 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/PuerkitoBio/goquery"
 	"github.com/alfredxing/calc/compute"
+	"io"
 	"math/rand"
 	"net/http"
 	"strconv"
@@ -33,10 +35,39 @@ func init() {
 		"hi":      "hi there!",
 		"time":    Time,
 		"thanks":  "you're welcome",
+		"google":  Google,
 	}
 }
 
 //FUNCTIONS
+func Google(message string) string {
+	if message == "" {
+		return "google what?"
+	}
+	fmt.Println(message[1:])
+	url := "http://www.google.com/search?q=" + strings.Replace(strings.Replace(strings.Replace(message[1:], " ", "|~|", -1), "+", "%2B", -1), "|~|", "+", -1)
+	fmt.Println(url)
+	response, err := http.Get(url)
+	if err != nil {
+		return err.Error()
+	}
+
+	defer response.Body.Close()
+	doc, err := goquery.NewDocumentFromReader(io.Reader(response.Body))
+	if err != nil {
+		return err.Error()
+	}
+	var returntext string
+	valid := true
+	doc.Find("span").Each(func(i int, s *goquery.Selection) {
+		text := s.Text()
+		if strings.Contains(text, "days ago") == false && strings.Contains(text, "day ago") == false && text != "" && valid == true {
+			valid = false
+			returntext = text
+		}
+	})
+	return returntext
+}
 func Date() string {
 	t := time.Now()
 	format := fmt.Sprintf("Today is %s, %s %d, %d", t.Weekday(), t.Month(), t.Day(), t.Year())
