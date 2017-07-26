@@ -5,8 +5,8 @@
     },
     "chat": {
         "lastperson": "someone",
-        "lastamount": 1,
-        "lasttext": "Lol",
+        "lastamount": 2,
+        "lasttext": "Ack lol my service is dead",
         "lasttextperson": "Eleanor"
     },
     "errormessage": "Sorry, I dont understand",

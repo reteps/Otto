@@ -18,26 +18,26 @@ var ottomap map[string]interface{}
 
 func init() {
 	ottomap = map[string]interface{}{"date": Date,
-		"help":     Help,
-		"random":   Random,
-		"say":      Say,
-		"roll":     Roll,
-		"mock":     Mock,
-		"flip":     Flip,
-		"magic":    Magic,
-		"will":     Magic,
-		"weather":  Weather,
-		"calc":     Calc,
-		"egg":      Egg, //eightball easter egg
-		"hello":    "hello there!",
-		"version":  "I am currently version 1.1beta",
-		"what":     "I am a imessage virtual assistant that runs when Peter's computer is on. Type 'otto help' to see all the commands I can do.",
-		"hi":       "hi there!",
-		"time":     Time, //running off host computer
-		"thanks":   "you're welcome",
-		"google":   Google,   //gets first span
-		"wiki":     Wiki,     //link
-		"wikitext": Wikitext, //intro paragraph
+		"help":    Help,
+		"random":  Random,
+		"say":     Say,
+		"roll":    Roll,
+		"mock":    Mock,
+		"flip":    Flip,
+		"magic":   Magic,
+		"will":    Magic,
+		"weather": Weather,
+		"calc":    Calc,
+		"egg":     Egg, //eightball easter egg
+		"hello":   "hello there!",
+		"version": "I am currently version 1.1beta",
+		"what":    "I am a imessage virtual assistant that runs when Peter's computer is on. Type 'otto help' to see all the commands I can do.",
+		"hi":      "hi there!",
+		"time":    Time, //running off host computer
+		"thanks":  "you're welcome",
+		"google":  Google,   //gets first span
+		"wiki":    Wiki,     //link
+		"info":    Wikitext, //intro paragraph
 	}
 }
 
