@@ -45,7 +45,7 @@ func Wiki(message string) string {
 	if message == "" {
 		return "search wikipedia for what?"
 	}
-	url := fmt.Sprintf("https://en.wikipedia.org/w/api.php?action=opensearch&search=%s&limit=1&namespace=0&format=json", message[1:])
+	url := fmt.Sprintf("https://en.wikipedia.org/w/api.php?action=opensearch&search=%s&limit=1&namespace=0&format=json", strings.Replace(message[1:], " ", "%20", -1))
 	resp, err := http.Get(url)
 	if err != nil {
 		return "read error wikisearch" + err.Error()
@@ -57,6 +57,7 @@ func Wiki(message string) string {
 	}
 	defer resp.Body.Close()
 	urllist := result1[len(result1)-1].([]interface{})
+	fmt.Println(urllist)
 	if len(urllist) == 0 {
 		return "Wikipedia couldn't find that page"
 	}
