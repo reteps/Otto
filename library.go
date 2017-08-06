@@ -26,6 +26,7 @@ func init() {
 		"flip":    Flip,
 		"magic":   Magic,
 		"will":    Magic,
+		"tod":	   ToD,
 		"weather": Weather,
 		"calc":    Calc,
 		"egg":     Egg, //eightball easter egg
@@ -42,6 +43,33 @@ func init() {
 }
 
 //FUNCTIONS
+func ToD(message, from string) string {
+ 	//Chooses a random truth or dare
+ 	dares := []string{
+ 		"Lick the floor.",
+ 		"Dance with no music for 1 minute.",
+ 		"Break two eggs on your head.",
+ 		"Do your best impression of a baby being born.",
+ 		"Put 4 ice cubes down your pants.",
+ 	}
+ 	truths := []string{
+ 		"What are you most self-conscious about?",
+ 		"What is your deepest darkest fear?",
+ 		"What is the scariest dream you have ever had?",
+ 		"What is the stupidest thing you have ever done?",
+ 		"What is the airspeed velocity of an unladen swallow?",
+ 	}
+ 	if message == "truth" {
+ 		rand.Seed(time.Now().Unix())
+ 		n := rand.Int() % len(test)
+ 		tod := fmt.Sprintln(truths[n])
+ 	}
+ 	if message == "dare" {
+ 		rand.Seed(time.Now().Unix())
+ 		n := rand.Int() % len(test)
+ 		tod := fmt.Sprintf(dares[n])
+ 	}
+ }
 func Wiki(message string) string {
 	if message == "" {
 		return "search wikipedia for what?"
