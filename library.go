@@ -27,14 +27,15 @@ func init() {
 		"magic":   Magic,
 		"will":    Magic,
 		"tod":	   ToD,
+		"ToD":     ToD,
 		"weather": Weather,
 		"calc":    Calc,
 		"egg":     Egg, //eightball easter egg
 		"hello":   "hello there!",
-		"version": "I am currently version 1.1beta",
+		"version": "I am Version 1.3.0",
 		"what":    "I am a imessage virtual assistant that runs when Peter's computer is on. Type 'otto help' to see all the commands I can do.",
 		"hi":      "hi there!",
-		"time":    Time, //running off host computer
+		"time":    Time, 
 		"thanks":  "you're welcome",
 		"google":  Google,   //gets first span
 		"wiki":    Wiki,     //link
@@ -43,32 +44,13 @@ func init() {
 }
 
 //FUNCTIONS
-func ToD(message, from string) string {
- 	//Chooses a random truth or dare
- 	dares := []string{
- 		"Lick the floor.",
- 		"Dance with no music for 1 minute.",
- 		"Break two eggs on your head.",
- 		"Do your best impression of a baby being born.",
- 		"Put 4 ice cubes down your pants.",
- 	}
- 	truths := []string{
- 		"What are you most self-conscious about?",
- 		"What is your deepest darkest fear?",
- 		"What is the scariest dream you have ever had?",
- 		"What is the stupidest thing you have ever done?",
- 		"What is the airspeed velocity of an unladen swallow?",
- 	}
- 	if message == "truth" {
- 		rand.Seed(time.Now().Unix())
- 		n := rand.Int() % len(test)
- 		tod := fmt.Sprintln(truths[n])
- 	}
- 	if message == "dare" {
- 		rand.Seed(time.Now().Unix())
- 		n := rand.Int() % len(test)
- 		tod := fmt.Sprintf(dares[n])
- 	}
+func ToD(message string) string {
+	list := Data.TruthOrDare["dares"]
+	rand.Seed(time.Now().UTC().UnixNano())\
+	if (message != " truth" && message != " dare" && randbool()) || (message == " truth") {
+		list = Data.TruthOrDare["truths"]
+	}
+ 	return list[randint(0,len(list)]
  }
 func Wiki(message string) string {
 	if message == "" {
@@ -348,6 +330,7 @@ type Results struct {
 	Errormessage string            `json:"errormessage"`
 	Maxmessage   string            `json:"maxmessage"`
 	Eightball    EightballSettings `json:"eightball"`
+	TruthOrDare map[string][]string `json:"truthordare"`
 }
 
 //helper functions
