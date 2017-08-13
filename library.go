@@ -178,6 +178,11 @@ func Egg(message string) string {
 		return "Invalid easter egg for otto magic."
 	}
 	triggers := strings.Split(parts[0], ",")
+	for _, trigger := range triggers {
+		if len(trigger) < 4 {
+			return "all trigger words must be at least 4 characters."
+		}
+	}
 	egg := parts[1]
 	Data.Eightball.Eastereggs[egg] = triggers
 	return fmt.Sprintf("added easter egg for '%s' that is triggered by %v", egg, triggers)
