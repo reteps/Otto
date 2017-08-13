@@ -26,14 +26,16 @@ func init() {
 		"flip":    Flip,
 		"magic":   Magic,
 		"will":    Magic,
+		"tod":	   ToD,
+		"ToD":     ToD,
 		"weather": Weather,
 		"calc":    Calc,
 		"egg":     Egg, //eightball easter egg
 		"hello":   "hello there!",
-		"version": "I am currently version 1.1beta",
+		"version": "I am Version 1.3.0",
 		"what":    "I am a imessage virtual assistant that runs when Peter's computer is on. Type 'otto help' to see all the commands I can do.",
 		"hi":      "hi there!",
-		"time":    Time, //running off host computer
+		"time":    Time, 
 		"thanks":  "you're welcome",
 		"google":  Google,   //gets first span
 		"wiki":    Wiki,     //link
@@ -42,6 +44,14 @@ func init() {
 }
 
 //FUNCTIONS
+func ToD(message string) string {
+	list := Data.TruthOrDare["dares"]
+	rand.Seed(time.Now().UTC().UnixNano())\
+	if (message != " truth" && message != " dare" && randbool()) || (message == " truth") {
+		list = Data.TruthOrDare["truths"]
+	}
+ 	return list[randint(0,len(list)]
+ }
 func Wiki(message string) string {
 	if message == "" {
 		return "search wikipedia for what?"
@@ -320,6 +330,7 @@ type Results struct {
 	Errormessage string            `json:"errormessage"`
 	Maxmessage   string            `json:"maxmessage"`
 	Eightball    EightballSettings `json:"eightball"`
+	TruthOrDare map[string][]string `json:"truthordare"`
 }
 
 //helper functions
