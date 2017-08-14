@@ -4,10 +4,10 @@
         "apikey": "6a4cbda1e239084151dea640a95d2a0c"
     },
     "chat": {
-        "lastperson": "someone",
-        "lastamount": 1,
-        "lasttext": "Oh wait nvm",
-        "lasttextperson": "Sorelle Werner"
+        "lastperson": "Lucy Randoom",
+        "lastamount": 2,
+        "lasttext": "Lol nice",
+        "lasttextperson": "Alexandra"
     },
     "errormessage": "Sorry, I dont understand",
     "maxmessage": "You have reached your 5 consecutive text limit",
@@ -60,5 +60,20 @@
                 "Dead"
             ]
         }
+    },
+    "truthordare": {
+        "dares": [
+            "Lick the floor.",
+            "Dance with no music for 1 minute.",
+            "Do your best impression of a baby being born.",
+            "Walk around for a minute with ice cubes in your socks.",
+            "Let everyone in the room put makeup on you"
+        ],
+        "truths": [
+            "What are you most self-conscious about?",
+            "What is your deepest darkest fear?",
+            "What is the scariest dream you have ever had?",
+            "What is the stupidest thing you have ever done?"
+        ]
     }
 }

@@ -4,9 +4,9 @@
         "apikey": "6a4cbda1e239084151dea640a95d2a0c"
     },
     "chat": {
-        "lastperson": "someone",
-        "lastamount": 1,
-        "lasttext": "Same sorelle",
+        "lastperson": "Lucy Randoom",
+        "lastamount": 2,
+        "lasttext": "Lol nice",
         "lasttextperson": "Alexandra"
     },
     "errormessage": "Sorry, I dont understand",
@@ -61,18 +61,19 @@
             ]
         }
     },
-    "truthordare" {
+    "truthordare": {
         "dares": [
- 		"Lick the floor.",
- 		"Dance with no music for 1 minute.",
- 		"Do your best impression of a baby being born.",
- 		"Put 4 ice cubes down your pants."
-        ], 
+            "Lick the floor.",
+            "Dance with no music for 1 minute.",
+            "Do your best impression of a baby being born.",
+            "Walk around for a minute with ice cubes in your socks.",
+            "Let everyone in the room put makeup on you"
+        ],
         "truths": [
- 		"What are you most self-conscious about?",
- 		"What is your deepest darkest fear?",
- 		"What is the scariest dream you have ever had?",
- 		"What is the stupidest thing you have ever done?",
- 	]
+            "What are you most self-conscious about?",
+            "What is your deepest darkest fear?",
+            "What is the scariest dream you have ever had?",
+            "What is the stupidest thing you have ever done?"
+        ]
     }
 }
