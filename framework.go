@@ -79,7 +79,19 @@ func main() {
 	Data = readandparsesettings(settingslocation)
 	ottomessage := false
 	if len(message) >= 4 {
-		if strings.ToLower(message[:4]) == "otto" {
+		if strings.ToLower(message[:4]) == "dead chat"
+			ottomessage = true
+			person := Data.Chat.Lastperson
+			time := time.Now().Format(time.RFC850))
+			allowedtorun := checkandwriteallowed(from, chatid)
+			ticker := time.NewTicker(time.Milliseconds * 1800000)
+			go func() {
+       				for t := range ticker.C {
+					if len(message) >= 4 && strings.ToLower(message[:4] == "dead chat" && Data.Chat.Lastperson != person {
+						testsend(Data.Chat.Lastperson + "has won dead chat!")
+
+	
+		else if strings.ToLower(message[:4]) == "otto" {
 			ottomessage = true
 			//check if allowed
 			//send correct text
