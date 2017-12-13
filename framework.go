@@ -94,7 +94,7 @@ func main() {
 				}
 			}	
 		}
-		else, if strings.ToLower(message[:4]) == "otto" {
+		else if strings.ToLower(message[:4]) == "otto" {
 			ottomessage = true
 			//check if allowed
 			//send correct text
