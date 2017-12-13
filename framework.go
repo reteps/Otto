@@ -89,12 +89,12 @@ func main() {
        				for t := range ticker.C {
 					if len(message) >= 4 && strings.ToLower(message[:4] == "dead chat" && Data.Chat.Lastperson != person {
 						winner := (Data.Chat.Lastperson,"has won dead chat!")
-						send
+						send(winner, chatid)
 					}
 				}
 			}	
 		}
-		else if strings.ToLower(message[:4]) == "otto" {
+		else, if strings.ToLower(message[:4]) == "otto" {
 			ottomessage = true
 			//check if allowed
 			//send correct text
